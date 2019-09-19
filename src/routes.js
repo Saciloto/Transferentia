@@ -6,19 +6,41 @@ import Ensinar from './pages/Ensinar';
 import React from 'react';
 import Cadastro from './pages/Cadastro';
 import Perfil from './pages/Perfil';
+import Aula from './pages/Aula';
 
 import  Icon  from 'react-native-vector-icons/FontAwesome5';
 
-const Routes = createBottomTabNavigator(
-    {
+const Routes = createBottomTabNavigator({
     Aprender:{
-        screen:Aprender,
-        navigationOptions:{
-            tabBarLabel:'Aprender',
-                tabBarIcon:() => (
-                    <Icon name="slideshare" size={35} color={"#fff"}/>)
-        }
-    },
+        screen:createStackNavigator({
+            Aprender:{
+                screen:Aprender,
+                navigationOptions:{
+                    header:null
+                }
+            },
+            Aula:{
+                screen:Aula,
+                navigationOptions:{
+                    title:'Ver aula',
+                    color:'#fff',
+                    headerStyle:{
+                        backgroundColor:'#7d330f',
+                        textColor:'#fff'
+                    },
+                    headerTintColor:'#ffffff',
+                    headerTitleStyle:{
+                        fontWeight:'bold',
+                        textAlign:'center',
+                        flex:1
+                    }
+                }
+            }
+    }),navigationOptions:{
+        tabBarLabel:'Aprender',
+            tabBarIcon:() => (
+                <Icon name="slideshare" size={35} color={"#fff"}/>)
+    },},
     Ensinar:{
         screen:Ensinar
     },
@@ -30,8 +52,7 @@ const Routes = createBottomTabNavigator(
                     <Icon name="user" size={35} color={"#fff"}/>
                 ),
             }
-    }
-    
+    }    
      },{
          tabBarOptions:{
              showIcon:true,
@@ -48,8 +69,7 @@ const RootNavigator = createStackNavigator({
         screen:Login,
         navigationOptions:{
             header:null    
-        },
-        
+        },  
     },
     Cadastro:{
         screen:Cadastro,
@@ -62,7 +82,8 @@ const RootNavigator = createStackNavigator({
         navigationOptions:{
             header:null    
         }        
-    }
+    },
+    
 },{
     initialRouteName:'Login'
 })

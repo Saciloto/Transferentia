@@ -1,15 +1,15 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity} from 'react-native';
 
 
-export default class Login extends Component {
+export default function Login({navigation}){
   
-    constructor(props){
-      super(props);
-      this.state={}
     
+    handleLoginButton = () =>{
+      
+      navigation.navigate('HomePage')
     }
-  render() {
+
       return (
         <ImageBackground
         source={{
@@ -21,12 +21,11 @@ export default class Login extends Component {
           <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
           <Text style={styles.instructions}>Faça seu login e comece a aprender =)</Text>
           <View style={styles.bottoes}>
-            <TouchableOpacity style={styles.loginButton} onPress={() =>
-            this.props.navigation.navigate('HomePage')}>
+            <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginButton()}>
               <Text style={styles.welcome}>Entrar</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.loginButton} onPress={()=>
-            this.props.navigation.navigate('Cadastro')}>
+            navigation.navigate('Cadastro')}>
               <Text style={styles.welcome}>Criar conta</Text>
             </TouchableOpacity>
           </View>
@@ -39,7 +38,6 @@ export default class Login extends Component {
       </ImageBackground>
     );
   }
-}
   
 const styles = StyleSheet.create({
   container: {

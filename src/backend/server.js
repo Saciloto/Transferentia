@@ -13,9 +13,9 @@ const io = require('socket.io')(server);
 io.on('connection',socket =>{
     console.log('NOVA COnexão', socket.id);
 
-    const {user} = socket.handshake.query;
-    connectedUsers[user] = socket.id;
-    console.log(user, socket.id)
+    //const {user} = socket.handshake.query;
+    //connectedUsers[user] = socket.id;
+    //console.log(user, socket.id)
     socket.on('hello',message =>{
         console.log(message)
     })
