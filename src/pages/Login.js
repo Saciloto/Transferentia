@@ -1,43 +1,76 @@
-import React from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity} from 'react-native';
+import React,{useState} from 'react';
+import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity,TextInput} from 'react-native';
 
 
 export default function Login({navigation}){
   
+  const [campo,setCampo] = useState(false)
+  
+  handleLoginButton = () =>{
     
-    handleLoginButton = () =>{
-      
-      navigation.navigate('HomePage')
-    }
-
-      return (
-        <ImageBackground
-        source={{
-          uri: 'https://s3-sa-east-1.amazonaws.com/rocketseat-cdn/background.png',
-        }} style={styles.container}  resizeMode="cover">
-        <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
-        <Image  style={styles.logo} source={require('../assets/icon.png')}/>
-        <View style={styles.containerView}>
-          <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
-          <Text style={styles.instructions}>Faça seu login e comece a aprender =)</Text>
-          <View style={styles.bottoes}>
-            <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginButton()}>
-              <Text style={styles.welcome}>Entrar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.loginButton} onPress={()=>
-            navigation.navigate('Cadastro')}>
-              <Text style={styles.welcome}>Criar conta</Text>
-            </TouchableOpacity>
-          </View>
-            <View style={styles.container}>
-              <TouchableOpacity>
-                  <Text style={styles.instructions}>Esqueceu a senha?</Text>
-              </TouchableOpacity>
-            </View>
-        </View>
-      </ImageBackground>
-    );
+    setCampo(true)
   }
+
+  handleAcessarButton = () =>{
+
+    navigation.navigate('Aprender')
+  }
+
+  return(
+    <ImageBackground
+          source={{uri: 'https://s3-sa-east-1.amazonaws.com/rocketseat-cdn/background.png'}} 
+          style={styles.container}  resizeMode="cover">
+      <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+
+      <Image  style={styles.logo} source={require('../assets/icon.png')}/>
+      <View style={styles.containerView}>
+        <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
+        <Text style={styles.esqueceuSenha}>Faça seu login e comece a aprender =)</Text>
+        
+        <View style={styles.bottoes}>
+          <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginButton()}>
+            <Text style={styles.welcome}>Entrar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>
+          navigation.navigate('Cadastro')}>
+            <Text style={styles.welcome}>Criar conta</Text>
+          </TouchableOpacity>
+        </View>
+        
+        {/* campos de login do usuário */}
+
+        {campo && 
+          <ImageBackground
+                  source={{uri: 'https://s3-sa-east-1.amazonaws.com/rocketseat-cdn/background.png'}} 
+                  style={styles.campoContainer}  resizeMode="stretch">
+            <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
+            <TextInput placeholder='E-mail'
+                      placeholderTextColor='#fff'
+                      keyboardType='email-address'
+                      style={styles.inputs}
+                      //value={email}
+                      //onChangeText={setEmail}
+                      />
+            <TextInput placeholder='Senha' 
+                      textContentType='password'
+                      placeholderTextColor='#fff'
+                      style={styles.inputs}
+                      />
+            <TouchableOpacity>
+              <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.loginButton} onPress={() => handleAcessarButton()}>
+              <Text style={styles.welcome}>Acessar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCampo(null)}>
+              <Text style={styles.voltar}>Voltar</Text>
+            </TouchableOpacity>
+          </ImageBackground>
+        }
+      </View>
+    </ImageBackground>
+  );
+}
   
 const styles = StyleSheet.create({
   container: {
@@ -54,9 +87,10 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
-    marginTop:40
+    marginTop:40,
+    marginBottom:40
   },
-  instructions: {
+  esqueceuSenha: {
     color:'#f78232',
     fontSize: 18,
     marginTop: 20,
@@ -85,6 +119,24 @@ const styles = StyleSheet.create({
   bottoes:{
     flex:1,
     flexDirection:'row'
+  },
+  campoContainer:{
+    position:'absolute',
+    width:'100%',
+    height:'100%',
+    alignItems:'center'
+  },
+  inputs:{
+      color:'transparent',
+      borderBottomWidth:2,
+      borderBottomColor:'#ccc',
+      width:250,
+      padding:20
+  },
+  voltar:{
+    marginTop:20,
+    fontSize:16,
+    color:'#fff'
   }
 });
 

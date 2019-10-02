@@ -33,9 +33,9 @@ const [email, setEmail] = useState(initialState);
      async function _handleCriarConta(){
         const data = new FormData();
 
-        data.append('userName',JSON.stringify(userName));
-        data.append('email',JSON.stringify(email));
-
+        data.append('userName',userName);
+        data.append('email',email);
+        console.log('ainda não salvo!!', name, email)
         await api.post('user',data)
 
         console.log('salvo no banco!!', name, email)
@@ -77,8 +77,8 @@ const [email, setEmail] = useState(initialState);
                         value={email}
                         onChangeText={setEmail}
                         />
-                    <TextInput placeholder='Senha' 
-                        textContentType='password'
+                    <TextInput placeholder='Senha'
+                        secureTextEntry={true}
                         placeholderTextColor='#fff' 
                         style={styles.inputs}/>
                 </View>
