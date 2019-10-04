@@ -1,17 +1,25 @@
-import React,{useState} from 'react';
-import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpacity,Image} from 'react-native';
+import React,{useState, useEffect} from 'react';
+import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpacity,Image, AsyncStorage} from 'react-native';
 //import AsyncStorage from '@react-native-community/async-storage'
 import ImagePicker from 'react-native-image-picker';
 
 import api from '../services/api';
 
 function Cadastro({navigation}) {
-const initialState = '';
-const [preview, setPreview] = useState(null);
-const [userName, setUsername] = useState(initialState);
-const [name, setName] = useState(initialState);
-const [email, setEmail] = useState(initialState);
+    const initialState = '';
+    const [preview, setPreview] = useState(null);
+    const [userName, setUsername] = useState(initialState);
+    const [name, setName] = useState(initialState);
+    const [email, setEmail] = useState(initialState);
 
+    /*useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
+        AsyncStorage.getItem('user').then(user =>{
+            if(user){
+                navigation.navigate('Aprender')
+            }
+        })
+    }, []);
+*/
     selecionarImagem = () => {
         ImagePicker.showImagePicker({
           title:'Selecionar Imagem',
@@ -30,15 +38,16 @@ const [email, setEmail] = useState(initialState);
         })
       }
 
-     async function _handleCriarConta(){
-        const data = new FormData();
+     async function handleCriarConta(){
+        const response = await api.post('./user',{
+            userName
+        })
 
-        data.append('userName',userName);
-        data.append('email',email);
-        console.log('ainda não salvo!!', name, email)
-        await api.post('user',data)
+        const {_id} = response.data;
 
-        console.log('salvo no banco!!', name, email)
+        console.log(_id);
+
+        await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
         navigation.navigate('Aprender')
     }
 
@@ -73,6 +82,8 @@ const [email, setEmail] = useState(initialState);
                     <TextInput placeholder='E-mail'
                         placeholderTextColor='#fff'
                         keyboardType='email-address'
+                        autoCapitalize='none'
+                        autoCorrect={false}
                         style={styles.inputs}
                         value={email}
                         onChangeText={setEmail}
@@ -83,7 +94,7 @@ const [email, setEmail] = useState(initialState);
                         style={styles.inputs}/>
                 </View>
                 <View style={styles.containerInputs}>
-                <TouchableOpacity style={styles.button} onPress={_handleCriarConta}>
+                <TouchableOpacity style={styles.button} onPress={handleCriarConta}>
                     <Text style={styles.txtButton}>Criar Conta</Text>
                 </TouchableOpacity>
                 </View>

@@ -7,6 +7,13 @@ module.exports = {
         const { titulo, descricao, data, preco} = req.body;
         const {professor_id} = req.headers;
 
+        /*const jaExiste = await AulaModel.find({professor_id})
+
+        if (jaExiste){
+            console.log('Já existe essa aula magrão', professor_id)
+            return res.json(jaExiste)
+        }*/
+
         const aula = await AulaModel.create({
             professor:professor_id,
             imagem:filename,

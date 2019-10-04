@@ -70,9 +70,9 @@ export const styles = StyleSheet.create({
       backgroundColor: 'transparent',
     },
     imageVertical:{
-      resizeMode:'stretch',
-      width:140,
-      height:140,
+      resizeMode:'cover',
+      width:200,
+      height:120,
       borderRadius:10
     },
     listDescricao:{

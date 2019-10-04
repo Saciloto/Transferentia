@@ -44,17 +44,21 @@ export default function Login({navigation}){
                   source={{uri: 'https://s3-sa-east-1.amazonaws.com/rocketseat-cdn/background.png'}} 
                   style={styles.campoContainer}  resizeMode="stretch">
             <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
-            <TextInput placeholder='E-mail'
+            <TextInput 
+                      style={styles.inputs}
+                      placeholder='E-mail'
                       placeholderTextColor='#fff'
                       keyboardType='email-address'
-                      style={styles.inputs}
+                      autoCapitalize='none'
+                      autoCorrect={false}
                       //value={email}
                       //onChangeText={setEmail}
                       />
-            <TextInput placeholder='Senha' 
+            <TextInput
+                      style={styles.inputs} 
+                      placeholder='Senha' 
                       textContentType='password'
                       placeholderTextColor='#fff'
-                      style={styles.inputs}
                       />
             <TouchableOpacity>
               <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
