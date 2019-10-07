@@ -77,9 +77,8 @@ export const styles = StyleSheet.create({
     },
     listDescricao:{
       flex:1,
-      paddingLeft:10,
-      marginRight:10,
-      marginLeft:10
+      paddingHorizontal:10,
+      marginHorizontal:10,
     },
     txtDescricao:{
       color:'#fff',

@@ -7,10 +7,13 @@ import api from '../services/api';
 
 function Cadastro({navigation}) {
     const initialState = '';
-    const [preview, setPreview] = useState(null);
+    const [preview,setPreview] = useState(null);
+    const [userImagem, setUserImagem] = useState(null);
     const [userName, setUsername] = useState(initialState);
     const [name, setName] = useState(initialState);
     const [email, setEmail] = useState(initialState);
+    const [senha,setSenha] = useState(initialState);
+
 
     /*useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
         AsyncStorage.getItem('user').then(user =>{
@@ -22,32 +25,55 @@ function Cadastro({navigation}) {
 */
     selecionarImagem = () => {
         ImagePicker.showImagePicker({
-          title:'Selecionar Imagem',
-  
+          title:'Selecionar Imagem',  
         }, updload => {
           if(updload.error){
           console.log('Error');
           } else if (updload.didCancel){
             console.log('Cancelado');
           } else {
-            const imagem = {
-              uri:`data:image/jpeg;base64,${updload.data}`,
+            const preview = {
+              uri:`data:image/jpeg;base64,${updload.data}`,        
             }
-            setPreview(imagem)
+
+            let prefix;
+            let ext;
+
+            if (updload.fileName){
+                [prefix,ext] = updload.fileName.split('.')
+                ext = ext.toLowerCase() === 'heic' ? 'jpg' : ext;
+            } else{
+                prefix = new Date.now();
+                ext = 'jpg';
+            }
+            const image = {
+                uri:updload.uri,
+                type:updload.type,
+                name:`${prefix}.${ext}`
+            };
+            setPreview(preview);
+            setUserImagem(image)
             } 
         })
       }
 
      async function handleCriarConta(){
-        const response = await api.post('./user',{
-            userName
-        })
+        const data = new FormData();
 
-        const {_id} = response.data;
+        data.append('userName',userName);
+        data.append('name',name);
+        data.append('email', email);
+        data.append('userImagem',userImagem),         
+        data.append('senha',senha)
 
-        console.log(_id);
+        //const response = await api.post('./user',data);
+            
+        await api.post('./user',data);
+        //const {_id} = response.data;
 
-        await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
+        //console.log(_id);
+
+       // await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
         navigation.navigate('Aprender')
     }
 
@@ -62,7 +88,7 @@ function Cadastro({navigation}) {
                     </Text>
                 </View>
                 <View style={styles.containerInputs}>
-                    <TouchableOpacity style={styles.button}onPress={this.selecionarImagem}>
+                    <TouchableOpacity style={styles.button}onPress={selecionarImagem}>
                         <Text style={styles.txtButton}>selecionar Imagem</Text>
                     </TouchableOpacity>
                     {preview && <Image style={styles.imagem} source={preview}/>}
@@ -91,7 +117,10 @@ function Cadastro({navigation}) {
                     <TextInput placeholder='Senha'
                         secureTextEntry={true}
                         placeholderTextColor='#fff' 
-                        style={styles.inputs}/>
+                        style={styles.inputs}
+                        value={senha}
+                        onChangeText={setSenha}
+                        />
                 </View>
                 <View style={styles.containerInputs}>
                 <TouchableOpacity style={styles.button} onPress={handleCriarConta}>
