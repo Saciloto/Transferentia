@@ -1,19 +1,31 @@
 import React,{useState} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity,TextInput} from 'react-native';
-
+import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity,TextInput,AsyncStorage} from 'react-native';
+import api from '../services/api';
 
 export default function Login({navigation}){
-  
-  const [campo,setCampo] = useState(false)
-  
+  const initialState = '';
+  const [campo, setCampo] = useState(false)
+  const [email, setEmail] = useState(initialState);
+  const [senha, setSenha] = useState(initialState);
+
+
   handleLoginButton = () =>{
     
     setCampo(true)
   }
 
-  handleAcessarButton = () =>{
-
-    navigation.navigate('Aprender')
+  async function handleAcessarButton(){
+    const response =  await api.post('/login',{email,senha})
+    const {message} = response.data;
+        
+        if (message){
+            alert(message)
+            
+        }else{
+          const {_id} = response.data
+          await AsyncStorage.setItem('user',_id);
+          navigation.navigate('Aprender')
+        }
   }
 
   return(
@@ -51,19 +63,23 @@ export default function Login({navigation}){
                       keyboardType='email-address'
                       autoCapitalize='none'
                       autoCorrect={false}
-                      //value={email}
-                      //onChangeText={setEmail}
+                      value={email}
+                      onChangeText={setEmail}
                       />
             <TextInput
                       style={styles.inputs} 
                       placeholder='Senha' 
                       textContentType='password'
                       placeholderTextColor='#fff'
+                      autoCapitalize='none'
+                      secureTextEntry={true}
+                      value={senha}
+                      onChangeText={setSenha}
                       />
             <TouchableOpacity>
               <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginButton} onPress={() => handleAcessarButton()}>
+            <TouchableOpacity style={styles.loginButton} onPress={handleAcessarButton}>
               <Text style={styles.welcome}>Acessar</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setCampo(null)}>
@@ -112,8 +128,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     marginTop:80,
     padding:10,
-    marginLeft:10,
-    marginRight:10,
+    marginHorizontal:10,
     borderRadius:40,
     borderWidth:0.5,
     height:40,
@@ -131,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   inputs:{
-      color:'transparent',
+      color:'#fff',
       borderBottomWidth:2,
       borderBottomColor:'#ccc',
       width:250,

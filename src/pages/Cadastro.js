@@ -1,6 +1,5 @@
 import React,{useState, useEffect} from 'react';
 import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpacity,Image, AsyncStorage} from 'react-native';
-//import AsyncStorage from '@react-native-community/async-storage'
 import ImagePicker from 'react-native-image-picker';
 
 import api from '../services/api';
@@ -13,7 +12,6 @@ function Cadastro({navigation}) {
     const [name, setName] = useState(initialState);
     const [email, setEmail] = useState(initialState);
     const [senha,setSenha] = useState(initialState);
-
 
     /*useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
         AsyncStorage.getItem('user').then(user =>{
@@ -35,10 +33,8 @@ function Cadastro({navigation}) {
             const preview = {
               uri:`data:image/jpeg;base64,${updload.data}`,        
             }
-
             let prefix;
             let ext;
-
             if (updload.fileName){
                 [prefix,ext] = updload.fileName.split('.')
                 ext = ext.toLowerCase() === 'heic' ? 'jpg' : ext;
@@ -56,7 +52,6 @@ function Cadastro({navigation}) {
             } 
         })
       }
-
      async function handleCriarConta(){
         const data = new FormData();
 
@@ -66,15 +61,17 @@ function Cadastro({navigation}) {
         data.append('userImagem',userImagem),         
         data.append('senha',senha)
 
-        //const response = await api.post('./user',data);
-            
-        await api.post('./user',data);
-        //const {_id} = response.data;
+        const response = await api.post('./user',data);
+        const {message} = response.data;
 
-        //console.log(_id);
-
-       // await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
-        navigation.navigate('Aprender')
+        if (!message){ // Verifica se existe mensagem de usuário já cadastrado, caso não tenha, cadastra o usuário
+            const {_id} = response.data //Pega o ID do usuário para salvar a seção 
+            await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
+            alert('Conta criada com sucesso, esperamos que aproveite!')    
+            navigation.navigate('Login')
+        }else{
+            alert(message);
+        }
     }
 
     return( 
@@ -104,6 +101,7 @@ function Cadastro({navigation}) {
                         style={styles.inputs}
                         value={name}
                         onChangeText={setName}
+                        autoCapitalize='words'
                         />
                     <TextInput placeholder='E-mail'
                         placeholderTextColor='#fff'

@@ -1,13 +1,35 @@
-import React from 'react';
-import {View,Text,ImageBackground,Image,StyleSheet} from 'react-native';
+import React,{useState,useEffect} from 'react';
+import {View,Text,ImageBackground,Image,StyleSheet,AsyncStorage } from 'react-native';
+
+import api from '../services/api';
 
 export default function Perfil(){
+    const [perfilName,setPerfilName] = useState('');
+    const [perfilEmail,setPerfilEmail] = useState('');
+    const [perfilImage,setPerfilImage] = useState('');
+
+    useEffect(() =>{
+        async function loadPerfil() {
+            const user_id = await AsyncStorage.getItem('user');
+            const response = await api.get('/user',{
+                headers:{user_id}
+            });
+            console.log(response.data);
+            const {userName,email,userImagem} = response.data.user[0] 
+            setPerfilName(userName);
+            setPerfilEmail(email);
+            setPerfilImage(userImagem);
+        }   
+        loadPerfil()
+    },[])
+    
     return(
         <ImageBackground
             source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
-            <Image source={require('../assets/IFF.png')} style={styles.profileImage}/>
-            <Text style={styles.userName}>Nome do usuário</Text>
-            <Text style={styles.userEspecial}>Especialides: </Text>
+            {/*<Image style={styles.profileImage} source={{uri:"http://192.168.0.110:3333/files/"+perfilImage}}/>*/}
+            <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
+            <Text style={styles.userName}>{perfilName}</Text>
+            <Text style={styles.userEspecial}>{perfilEmail}</Text>
         </ImageBackground>
     )
 }
@@ -23,8 +45,7 @@ const styles = StyleSheet.create({
         width:250,
         height:250,
         borderRadius:125,
-        alignItems:'stretch',
-        borderWidth:2,
+        borderWidth:1,
         borderColor:'#fff'
     },
     userName:{
@@ -35,7 +56,6 @@ const styles = StyleSheet.create({
     },
     userEspecial:{
         color:'#fff',
-        fontWeight:'100',
         fontSize:20,
         textAlign:'left'
     }
