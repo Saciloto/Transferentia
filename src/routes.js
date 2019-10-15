@@ -9,6 +9,8 @@ import Perfil from './pages/Perfil';
 import Aula from './pages/Aula';
 
 import  Icon  from 'react-native-vector-icons/FontAwesome5';
+import EuProfessor from './pages/EuProfessor';
+import EuAluno from './pages/EuAluno';
 
 const Routes = createBottomTabNavigator({
     Aprender:{
@@ -42,11 +44,54 @@ const Routes = createBottomTabNavigator({
                 <Icon name="slideshare" size={35} color={"#fff"}/>)
     },},
     Ensinar:{
-        screen:Ensinar
+        screen:Ensinar,
+        navigationOptions:{
+            tabBarLabel:'Ensinar',
+            tabBarIcon:() => (
+                <Icon name="handshake" size={35} color={"#fff"}/>
+            ),
+        }
     },
     Perfil:{
-        screen:Perfil,
-        navigationOptions:{
+        screen:createStackNavigator({
+            Perfil:{
+            screen:Perfil,
+            navigationOptions:{
+                header:null
+            }},
+            EuProfessor:{
+                screen:EuProfessor,
+                navigationOptions:{
+                    title:'Minhas Turmas - Instrutor',
+                    color:'#fff',
+                    headerStyle:{
+                        backgroundColor:'#7d330f',
+                        textColor:'#fff'
+                    },
+                    headerTintColor:'#ffffff',
+                    headerTitleStyle:{
+                        textAlign:'center',     
+                    }
+                }
+            },
+            EuAluno:{
+                screen:EuAluno,
+                navigationOptions:{
+                    title:'Minhas Turmas - Aluno',
+                    color:'#fff',
+                    headerStyle:{
+                        backgroundColor:'#7d330f',
+                        textColor:'#fff'
+                    },
+                    headerTintColor:'#ffffff',
+                    headerTitleStyle:{
+                        textAlign:'center',
+                    }
+                }
+           }
+
+
+    }),navigationOptions:{
             tabBarLabel:'Perfil',
                 tabBarIcon:() => (
                     <Icon name="user" size={35} color={"#fff"}/>

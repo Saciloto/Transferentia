@@ -1,56 +1,73 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Text, View,ImageBackground,StatusBar,StyleSheet,TextInput,DatePickerAndroid,TouchableOpacity,
-        TimePickerAndroid,Image,ScrollView } from 'react-native';
-import Icon from '../../node_modules/react-native-vector-icons/FontAwesome5';
+        TimePickerAndroid,Image,ScrollView, AsyncStorage } from 'react-native';
+import api from '../services/api';
 import ImagePicker from 'react-native-image-picker';
 
+export default function Ensinar({navigation}) {
 
-export default class Ensinar extends Component {
+  const [chosenDate, setChosenDate] = useState(new Date());
+  const [chosenAndroidTime, setChosenAndroidTime] = useState('00:00');
+  const [androidDate, setAndroidDate] = useState(`${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`);
+  const [aulaTitle, setAulaTitle] = useState('');
+  
+  const [preview,setPreview] = useState(null);
+  const [aulaImagem,setAulaImagem] = useState(null);
+  const [professor, setProfessor] = useState();
+  const [titulo, setTitulo] = useState('');
+  const [descricao,setDescricao] = useState('');
+  //const [materiais,setMateriais] = useState('');
+  const [preco, setPreco] = useState('');
+  const [data, setData] = useState('');
+  const [hora, setHora] = useState('');
 
-  static navigationOptions = {
-    tabBarLabel:'Ensinar',
-    tabBarIcon:() => (
-        <Icon name="handshake" size={35} color={"#fff"}/>
-    ),
+  useEffect(() =>{
+    async function loadPerfil() {
+        const user_id = await AsyncStorage.getItem('user');
+        const response = await api.get('/user',{
+            headers:{user_id}
+        });
+        console.log(response.data);
+        setProfessor(user_id);
+    }   
+    loadPerfil()
+},[])
+    
+  selecionarImagem = () => {
+    ImagePicker.showImagePicker({
+      title:'Selecionar Imagem',  
+    }, updload => {
+      if(updload.error){
+        console.log('Error');
+      } else if (updload.didCancel){
+        console.log('Cancelado');
+      } else {
+        const preview = {
+          uri:`data:image/jpeg;base64,${updload.data}`,        
+        }
+        let prefix;
+        let ext;
+        if (updload.fileName){
+            [prefix,ext] = updload.fileName.split('.')
+            ext = ext.toLowerCase() === 'heic' ? 'jpg' : ext;
+        } else{
+            prefix = new Date.now();
+            ext = 'jpg';
+        }
+        const image = {
+            uri:updload.uri,
+            type:updload.type,
+            name:`${prefix}.${ext}`
+        };
+        setPreview(preview);
+        setAulaImagem(image);
+        } 
+    })
   }
 
-    constructor(props){
-        super(props);
-        this.state = {
-            chosenDate: new Date(),
-            chosenAndroidTime: '00:00',
-            androidDate: `${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`,
-            value: 50,
-
-
-            preview: null,
-          };
+    setDate = (newDate) => {
+      setChosenDate(newDate);
     }
-
-   
-    selecionarImagem = () => {
-      ImagePicker.showImagePicker({
-        title:'Selecionar Imagem',
-
-      }, updload => {
-        if(updload.error){
-        console.log('Error');
-        } else if (updload.didCancel){
-          console.log('Cancelado');
-        } else {
-          const preview = {
-            uri:`data:image/jpeg;base64,${updload.data}`,
-          }
-
-          this.setState({preview});
-        } 
-      })
-    }
-
-
-    setDate(newDate) {
-        this.setState({ chosenDate: newDate });
-      }
       
     setDateAndroid = async () => {
         try {
@@ -59,7 +76,7 @@ export default class Ensinar extends Component {
           minDate: new Date(),
           });
           if (action !== DatePickerAndroid.dismissedAction) {
-            this.setState({ androidDate: `${day}/${month + 1}/${year}` });
+            setAndroidDate(`${day}/${month + 1}/${year}`);
           }
         } catch ({ code, message }) {
           console.warn('Cannot open date picker', message);
@@ -67,25 +84,41 @@ export default class Ensinar extends Component {
       };
       
     setTimeAndroid = async () => {
-        try {
-          const { action, hour, minute } = await TimePickerAndroid.open({
-            hour: 14,
-            minute: 0,
-            is24Hour: true, // Will display '2 PM'
-          });
-          if (action !== TimePickerAndroid.dismissedAction) {
-            // Selected hour (0-23), minute (0-59)
-            const m = (minute < 10) ? `0${minute}` : minute;
-            const h = (hour < 10) ? `0${hour}` : hour;
-            console.log(`time: ${hour}:${minute}`);
-            this.setState({ chosenAndroidTime: `${h}:${m}` });
-          }
-        } catch ({ code, message }) {
-          console.warn('Cannot open time picker', message);
+      try {
+        const { action, hour, minute } = await TimePickerAndroid.open({
+          hour: 14,
+          minute: 0,
+          is24Hour: true, // Will display '2 PM'
+        });
+        if (action !== TimePickerAndroid.dismissedAction) {
+          // Selected hour (0-23), minute (0-59)
+          const m = (minute < 10) ? `0${minute}` : minute;
+          const h = (hour < 10) ? `0${hour}` : hour;
+          console.log(`time: ${hour}:${minute}`);
+          setChosenAndroidTime(`${h}:${m}`);
         }
-      };
+      } catch ({ code, message }) {
+        console.warn('Cannot open time picker', message);
+      }
+    };
 
-    render() {
+    async function handleCriarAula(){
+      parseInt(preco);
+      const data = new FormData();
+
+      data.append('aulaImagem',aulaImagem);   
+      data.append('titulo',titulo);      
+      data.append('descricao', descricao);
+      data.append('data',androidDate);
+      data.append('preco',preco);
+      data.append('professor',professor);
+
+      await api.post('/aula',data);
+      alert("Aula criada com sucesso!") 
+      //const {_id} = response.data;
+     // alert(_id)
+    }
+
         return (
             <ImageBackground
             source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
@@ -97,50 +130,59 @@ export default class Ensinar extends Component {
                 <View style={styles.containerButtons}>   
                     <TextInput 
                         placeholder='Titulo da aula'
-                        placeholderTextColor='#fff' 
-                        style={styles.inputs}/>
+                        placeholderTextColor='#fff'
+                        value={titulo}
+                        onChangeText={setTitulo}
+                        style={styles.inputs}
+                        />
                     <TextInput 
                         multiline={true}
                         placeholder='Descreva sua aula aqui...'
                         placeholderTextColor='#fff'
+                        value={descricao}
+                        onChangeText={setDescricao}
                         style={[styles.inputs,styles.descricao]}/>
-                    <TextInput 
-                        placeholder="Conhecimento necessário"
-                        placeholderTextColor='#fff'
-                        style={styles.inputs}/>
-                    <TextInput 
+                    {/* <TextInput 
                         placeholder="Materiais necessários"
                         placeholderTextColor='#fff'
+                        value={materiais}
+                        onChangeText={setMateriais}
+                        style={styles.inputs}/> */}
+                    <TextInput 
+                        placeholder="Valor: "
+                        keyboardType='numeric'
+                        placeholderTextColor='#fff'
+                        value={preco}
+                        onChangeText={setPreco}
                         style={styles.inputs}/>
                     <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtButton} onPress={this.selecionarImagem}>
+                        <TouchableOpacity style={styles.dtButton} onPress={selecionarImagem}>
                             <Text style={styles.title}>Imagem</Text>
                         </TouchableOpacity>
                       
-                      {this.state.preview && <Image style={styles.preview} source={this.state.preview}/>}
+                      {preview && <Image style={styles.preview} source={preview}/>}
                     </View>            
                         <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtButton} onPress={this.setDateAndroid}>
+                        <TouchableOpacity style={styles.dtButton} onPress={setDateAndroid}>
                             <Text style={styles.title}>Data</Text>
                         </TouchableOpacity>
-                        <Text style={styles.title}>{this.state.androidDate}</Text>
+                        <Text style={styles.title}>{androidDate}</Text>
                         </View>
                         <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtButton} onPress={this.setTimeAndroid}>
+                        <TouchableOpacity style={styles.dtButton} onPress={setTimeAndroid}>
                             <Text style={styles.title}>Hora</Text>
                         </TouchableOpacity>
-                        <Text style={styles.title}>{this.state.chosenAndroidTime} Hrs</Text>
+                        <Text style={styles.title}>{chosenAndroidTime} Hrs</Text>
                         </View>
                     <Text style={styles.obsText}> OBS¹: O Endereço deverá ser combinado juntamento com seu aluno!</Text>
                 </View> 
-                <TouchableOpacity style={styles.button} onPress={this.setTimeAndroid}>
+                <TouchableOpacity style={styles.button} onPress={handleCriarAula}>
                     <Text style={styles.title}>Ensinar</Text>
                 </TouchableOpacity>
               </ScrollView>
             </ImageBackground>
         )
     }
-}
 
 const styles = StyleSheet.create({
     container: {

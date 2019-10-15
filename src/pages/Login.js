@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity,TextInput,AsyncStorage} from 'react-native';
 import api from '../services/api';
 
@@ -8,11 +8,14 @@ export default function Login({navigation}){
   const [email, setEmail] = useState(initialState);
   const [senha, setSenha] = useState(initialState);
 
+  useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
+        AsyncStorage.getItem('user').then(user =>{
+            if(user){
+                navigation.navigate('Aprender')
+            }
+        })
+    }, []);
 
-  handleLoginButton = () =>{
-    
-    setCampo(true)
-  }
 
   async function handleAcessarButton(){
     const response =  await api.post('/login',{email,senha})
@@ -40,7 +43,7 @@ export default function Login({navigation}){
         <Text style={styles.esqueceuSenha}>Faça seu login e comece a aprender =)</Text>
         
         <View style={styles.bottoes}>
-          <TouchableOpacity style={styles.loginButton} onPress={() => handleLoginButton()}>
+          <TouchableOpacity style={styles.loginButton} onPress={() => setCampo(true)}>
             <Text style={styles.welcome}>Entrar</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.loginButton} onPress={()=>

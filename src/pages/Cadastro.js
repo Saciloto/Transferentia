@@ -13,14 +13,7 @@ function Cadastro({navigation}) {
     const [email, setEmail] = useState(initialState);
     const [senha,setSenha] = useState(initialState);
 
-    /*useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
-        AsyncStorage.getItem('user').then(user =>{
-            if(user){
-                navigation.navigate('Aprender')
-            }
-        })
-    }, []);
-*/
+    
     selecionarImagem = () => {
         ImagePicker.showImagePicker({
           title:'Selecionar Imagem',  

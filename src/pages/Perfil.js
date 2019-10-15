@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react';
-import {View,Text,ImageBackground,Image,StyleSheet,AsyncStorage } from 'react-native';
+import {View,Text,ImageBackground,Image,StyleSheet,AsyncStorage,TouchableOpacity,ScrollView } from 'react-native';
 
 import api from '../services/api';
 
-export default function Perfil(){
+export default function Perfil({navigation}){
     const [perfilName,setPerfilName] = useState('');
     const [perfilEmail,setPerfilEmail] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
@@ -30,6 +30,21 @@ export default function Perfil(){
             <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
             <Text style={styles.userName}>{perfilName}</Text>
             <Text style={styles.userEspecial}>{perfilEmail}</Text>
+            <ScrollView style={styles.scrollView}>
+            <Text style={styles.userEspecial}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+            </ScrollView>
+            <Text style={styles.userEspecial}>Minhas turmas como:</Text>
+            <View style={styles.bottoes}>
+                <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('EuAluno') }>
+                    <Text style={styles.userEspecial}>Aluno</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.loginButton} onPress={()=> navigation.navigate('EuProfessor')}>
+                    <Text style={styles.userEspecial}>Instrutor</Text>
+                </TouchableOpacity>
+            </View>
         </ImageBackground>
     )
 }
@@ -58,5 +73,30 @@ const styles = StyleSheet.create({
         color:'#fff',
         fontSize:20,
         textAlign:'left'
-    }
+    },
+    scrollView:{
+        maxHeight:150,
+        borderWidth:0.2,
+        borderColor:'#ccc',
+        marginHorizontal:20,
+        marginVertical:10,
+        paddingHorizontal:10,
+        borderRadius:10
+    },
+    bottoes:{
+        flexDirection:'row',
+        marginVertical:10
+    },
+    loginButton:{
+        backgroundColor:'transparent',
+        alignItems:'center',
+        justifyContent:'center',
+        padding:10,
+        marginHorizontal:20,
+        borderRadius:40,
+        borderWidth:0.5,
+        height:40,
+        width:150,
+        borderColor:'#ccc'
+    },
 })

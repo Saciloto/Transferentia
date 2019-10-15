@@ -19,49 +19,39 @@ export const styles = StyleSheet.create({
       marginTop: 20,
       textAlign: 'center',
     },
-    titleView:{
-      flex:1,
-      height:150,
-      width:150,
-      alignItems:'center',
-      justifyContent:'center',
-      marginTop:20,
-      backgroundColor:'#ddd',
-    },
     listHorozintal:{
       flex:1,
       paddingTop:10,
       alignItems:'center',
       justifyContent:'space-between',
-      marginRight:20,
-      marginLeft:20,
+      marginHorizontal:20
     },
     tituloHorizontal:{
       color:'#fff',
-      fontSize:16,
+      fontSize:20,
       fontWeight:'bold',
-      paddingTop:10,
+      paddingTop:5,
+      paddingHorizontal:5,
+      borderBottomWidth:0.5,
+      borderBottomColor:'#f78232'
     },
     imageHorizontal:{
-      resizeMode:'stretch',
+      resizeMode:'cover',
       width:140,
       height:140,
-      borderRadius:10
-    },
-    containerFlatlist:{
-      flex:1,
-      height:220,
-      width:400,
-      alignItems:'stretch',
-      //backgroundColor:'#fff',
+      borderRadius:10,
+      marginVertical:5
     },
     containerListVert:{
       flex:1,
       flexDirection:'column',
       justifyContent:'space-between',
-      borderWidth:1,
+      borderWidth:0.5,
       borderRadius:10,
-      borderColor:'#7d330f'
+      borderColor:'#ccc',
+      marginVertical:5,
+      marginHorizontal:10,
+      paddingHorizontal:5
     },
     cardVerti:{
       flex:1,
@@ -71,7 +61,9 @@ export const styles = StyleSheet.create({
     },
     imageVertical:{
       resizeMode:'cover',
-      width:200,
+      marginVertical:10,
+      marginHorizontal:10,
+      width:180,
       height:120,
       borderRadius:10
     },
@@ -82,7 +74,17 @@ export const styles = StyleSheet.create({
     },
     txtDescricao:{
       color:'#fff',
-      fontSize:14
+      fontSize:14,
+    },
+    preco:{
+      color:'#ccc',
+      fontSize:18,
+      fontWeight:'bold',
+      marginHorizontal:10,
+      alignSelf:'flex-end',
+      textAlign:'right',
+      borderBottomWidth:0.3,
+      borderBottomColor:'#f78232'
     }
   });
 

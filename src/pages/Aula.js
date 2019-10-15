@@ -1,35 +1,36 @@
-import React from 'react';
-import {View,Text,Image,ScrollView, StyleSheet,Button} from 'react-native';
+import React,{useState} from 'react';
+import {View,Text,Image,ScrollView, StyleSheet,Button,AsyncStorage} from 'react-native';
+
+import api from '../services/api';
 
 function Aula({navigation}){
-   
-    const uriImage = navigation.getParam('image')
+    const [disable,setDisable] = useState(false)
+
+    async function handleInscricao(){
+        const user_id = await AsyncStorage.getItem('user');
+        const aula_id = navigation.getParam('aula_id');
+        
+        response =  await api.patch('./aula',{
+            user_id:user_id,
+            aula_id:aula_id}
+        );
+        const {message} = response.data
+        alert(message)
+        setDisable(true)
+    }
+
+    const uriImage = navigation.getParam('aulaImagem')
     return(
         <>
         <ScrollView>
-            <Image style={estilo.image} source={{uri:uriImage}}/>
-            <Text style={estilo.title}>{JSON.stringify(navigation.getParam('title'))}</Text>
-            <Text style={estilo.professor}>{JSON.stringify(navigation.getParam('name'))}</Text>
-            <Text style={estilo.descricao}>{JSON.stringify(navigation.getParam('descricao'))}</Text>
-
-            <Image style={estilo.image} source={{uri:uriImage}}/>
-            <Text style={estilo.title}>{JSON.stringify(navigation.getParam('title'))}</Text>
-            <Text style={estilo.professor}>{JSON.stringify(navigation.getParam('name'))}</Text>
-            <Text style={estilo.descricao}>{JSON.stringify(navigation.getParam('descricao'))}</Text>
-
-            <Image style={estilo.image} source={{uri:uriImage}}/>
-            <Text style={estilo.title}>{JSON.stringify(navigation.getParam('title'))}</Text>
-            <Text style={estilo.professor}>{JSON.stringify(navigation.getParam('name'))}</Text>
-            <Text style={estilo.descricao}>{JSON.stringify(navigation.getParam('descricao'))}</Text>
-
-            <Image style={estilo.image} source={{uri:uriImage}}/>
-            <Text style={estilo.title}>{JSON.stringify(navigation.getParam('title'))}</Text>
-            <Text style={estilo.professor}>{JSON.stringify(navigation.getParam('name'))}</Text>
-            <Text style={estilo.descricao}>{JSON.stringify(navigation.getParam('descricao'))}</Text>
+            <Image style={estilo.image} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+uriImage}}/>
+            <Text style={estilo.title}>{navigation.getParam('titulo')}</Text>
+            <Text style={estilo.professor}>{navigation.getParam('data')}</Text>
+            <Text style={estilo.descricao}>{navigation.getParam('descricao')}</Text>
         </ScrollView>
         <View style={estilo.footer}>
-            <Text style={estilo.preco}> Valor: {JSON.stringify(navigation.getParam('price'))} R$ Hora/Aula </Text>
-            <Button color={'#7169c1'} title={'Inscrever-se na aula'}></Button>  
+            <Text style={estilo.preco}> Valor: {navigation.getParam('preco')} R$ Hora/Aula </Text>
+            <Button color={'#7169c1'} title={'Inscrever-se na aula'} onPress={handleInscricao} disabled={disable}></Button>  
         </View>
         </>
     )
@@ -41,10 +42,10 @@ const estilo = StyleSheet.create({
     image:{
         flex:1,
         justifyContent:'center',
-        alignContent:'stretch',
         alignSelf:'center',
         width:'100%',
-        height:250
+        height:250,
+        resizeMode:'cover'
     },
     title:{
         textAlign:'center',
