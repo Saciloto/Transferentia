@@ -1,6 +1,8 @@
 import React,{useState, useEffect} from 'react';
-import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpacity,Image, AsyncStorage} from 'react-native';
+import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpacity,Image, AsyncStorage,ActivityIndicator} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
 
 import api from '../services/api';
 
@@ -12,6 +14,7 @@ function Cadastro({navigation}) {
     const [name, setName] = useState(initialState);
     const [email, setEmail] = useState(initialState);
     const [senha,setSenha] = useState(initialState);
+    const [carregando, setCarregando] = useState(false);
 
     
     selecionarImagem = () => {
@@ -46,6 +49,7 @@ function Cadastro({navigation}) {
         })
       }
      async function handleCriarConta(){
+        setCarregando(true)
         const data = new FormData();
 
         data.append('userName',userName);
@@ -60,10 +64,13 @@ function Cadastro({navigation}) {
         if (!message){ // Verifica se existe mensagem de usuário já cadastrado, caso não tenha, cadastra o usuário
             const {_id} = response.data //Pega o ID do usuário para salvar a seção 
             await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
-            alert('Conta criada com sucesso, esperamos que aproveite!')    
+            alert('Conta criada com sucesso, esperamos que aproveite!')
+            setCarregando(false)
             navigation.navigate('Login')
         }else{
             alert(message);
+            setCarregando(false)
+            
         }
     }
 
@@ -71,24 +78,33 @@ function Cadastro({navigation}) {
         <ImageBackground source={require('../assets/preto.jpg')} 
             resizeMode='cover'
             style={styles.container}>
-            <ScrollView>
+            
+                { carregando && <View style={styles.loading}> 
+                <ActivityIndicator size='large' color='#aae' animating={true}/>
+
+                </View> || <ScrollView>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
                         Crie sua conta e entre no mundo do compartilhamento de conhecimento
                     </Text>
                 </View>
                 <View style={styles.containerInputs}>
-                    <TouchableOpacity style={styles.button}onPress={selecionarImagem}>
-                        <Text style={styles.txtButton}>selecionar Imagem</Text>
-                    </TouchableOpacity>
-                    {preview && <Image style={styles.imagem} source={preview}/>}
-
+                    {preview 
+                        && 
+                    <TouchableOpacity onPress={selecionarImagem}> 
+                        <Image style={styles.imagem} source={preview} />
+                    </TouchableOpacity> 
+                        || 
+                    <TouchableOpacity style={styles.imageButton}onPress={selecionarImagem}>
+                        <Icon name='image' color={'#fff'} size={22}/>
+                        <Text style={styles.txtButton}>Selecionar Imagem</Text>
+                    </TouchableOpacity> }
                     <TextInput placeholder='Nome de Usuário'
                         placeholderTextColor='#fff' 
                         style={styles.inputs}
                         value={userName}
                         onChangeText={setUsername}
-                        />
+                        />                    
                     <TextInput placeholder='Nome Completo'
                         placeholderTextColor='#fff' 
                         style={styles.inputs}
@@ -114,11 +130,12 @@ function Cadastro({navigation}) {
                         />
                 </View>
                 <View style={styles.containerInputs}>
+
                 <TouchableOpacity style={styles.button} onPress={handleCriarConta}>
                     <Text style={styles.txtButton}>Criar Conta</Text>
                 </TouchableOpacity>
                 </View>
-            </ScrollView>
+            </ScrollView>}
         </ImageBackground>
     )
 }
@@ -152,11 +169,24 @@ const styles = StyleSheet.create({
         marginBottom:10,
         marginTop:10
     },
+    imageButton:{
+        borderWidth:0.5,
+        borderColor:'#fff',
+        alignItems:'center',
+        justifyContent:'center',
+        width:180,
+        height:180,
+        borderRadius:90,
+        marginTop:10
+    },
     imagem:{
         width:180,
         height:180,
-       borderRadius:90,
-       marginTop:10
+        borderRadius:90,
+        marginTop:10
+    },
+    linha:{
+        flexDirection:'row'
     },
     inputs:{
         color:'#fff',
@@ -166,13 +196,12 @@ const styles = StyleSheet.create({
         padding:20
     },
     button:{
+        flexDirection:'row',
         backgroundColor:'transparent',
-        width:150,
+        width:'50%',
         alignItems:'center',
         justifyContent:'center',
         marginTop:30,
-        marginLeft:20,
-        marginRight:20,
         padding:10,
         borderRadius:40,
         borderWidth:0.5,
@@ -188,5 +217,14 @@ const styles = StyleSheet.create({
         fontSize:20,
         textAlign:'center',
         padding:20
+    },
+    loading:{
+        justifyContent:'center',
+        alignItems:'center',
+        position:'absolute',
+        width:'100%',
+        height:'100%',
+        backgroundColor:'transparent',
+        
     }
 })

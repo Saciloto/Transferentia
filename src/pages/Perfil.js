@@ -1,5 +1,7 @@
 import React,{useState,useEffect} from 'react';
-import {View,Text,ImageBackground,Image,StyleSheet,AsyncStorage,TouchableOpacity,ScrollView } from 'react-native';
+import {View,Text,ImageBackground,Image,StyleSheet,AsyncStorage,TouchableOpacity,ScrollView, BackHandler } from 'react-native';
+
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import api from '../services/api';
 
@@ -23,10 +25,18 @@ export default function Perfil({navigation}){
         loadPerfil()
     },[])
     
+    async function handleSair(){
+        await AsyncStorage.clear();
+        BackHandler.exitApp()
+    }
+
     return(
         <ImageBackground
             source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
-            {/*<Image style={styles.profileImage} source={{uri:"http://192.168.0.110:3333/files/"+perfilImage}}/>*/}
+            <TouchableOpacity style={styles.sairBt} onPress={handleSair}>
+                <Icon name='sign-out-alt' color={'#fff'} size={22} style={{padding:3}}/>
+                <Text style={styles.userEspecial}>Sair</Text>
+            </TouchableOpacity>
             <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
             <Text style={styles.userName}>{perfilName}</Text>
             <Text style={styles.userEspecial}>{perfilEmail}</Text>
@@ -38,11 +48,14 @@ export default function Perfil({navigation}){
             </ScrollView>
             <Text style={styles.userEspecial}>Minhas turmas como:</Text>
             <View style={styles.bottoes}>
-                <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('EuAluno') }>
+                <TouchableOpacity style={styles.funcoesButton} onPress={() => navigation.navigate('EuAluno') }>
                     <Text style={styles.userEspecial}>Aluno</Text>
+                    <Icon name='book-reader' color={'#fff'} size={22}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.loginButton} onPress={()=> navigation.navigate('EuProfessor')}>
+                <TouchableOpacity style={styles.funcoesButton} onPress={()=> navigation.navigate('EuProfessor')}>
                     <Text style={styles.userEspecial}>Instrutor</Text>
+                    <Icon name='chalkboard-teacher' color={'#fff'} size={22} style={{padding:3, paddingLeft:3}}/>
+
                 </TouchableOpacity>
             </View>
         </ImageBackground>
@@ -55,7 +68,7 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     profileImage:{
-        marginTop:40,
+        marginTop:15,
         marginBottom:20,
         width:250,
         height:250,
@@ -99,4 +112,31 @@ const styles = StyleSheet.create({
         width:150,
         borderColor:'#ccc'
     },
+    sairBt:{
+        flexDirection:'row-reverse',
+        //position:'absolute',
+        marginTop:5,
+        backgroundColor:'transparent',
+        alignItems:'stretch',
+        alignSelf:'flex-end',
+        justifyContent:'center',
+        borderRadius:40,
+        borderWidth:0.5,
+        height:30,
+        width:75,
+        borderColor:'#ccc'
+    },
+    funcoesButton:{
+        flexDirection:'row',
+        backgroundColor:'transparent',
+        alignItems:'center',
+        justifyContent:'space-between',
+        padding:10,
+        marginHorizontal:20,
+        borderRadius:40,
+        borderWidth:0.5,
+        height:40,
+        width:120,
+        borderColor:'#ccc'
+    }
 })

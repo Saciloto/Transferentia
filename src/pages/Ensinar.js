@@ -1,25 +1,28 @@
 import React, { useState,useEffect } from 'react';
 import { Text, View,ImageBackground,StatusBar,StyleSheet,TextInput,DatePickerAndroid,TouchableOpacity,
-        TimePickerAndroid,Image,ScrollView, AsyncStorage } from 'react-native';
+        TimePickerAndroid,Image,ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import api from '../services/api';
 import ImagePicker from 'react-native-image-picker';
+
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 export default function Ensinar({navigation}) {
 
   const [chosenDate, setChosenDate] = useState(new Date());
   const [chosenAndroidTime, setChosenAndroidTime] = useState('00:00');
   const [androidDate, setAndroidDate] = useState(`${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`);
-  const [aulaTitle, setAulaTitle] = useState('');
   
+  const initialState = '';
   const [preview,setPreview] = useState(null);
   const [aulaImagem,setAulaImagem] = useState(null);
   const [professor, setProfessor] = useState();
-  const [titulo, setTitulo] = useState('');
-  const [descricao,setDescricao] = useState('');
-  //const [materiais,setMateriais] = useState('');
-  const [preco, setPreco] = useState('');
-  const [data, setData] = useState('');
-  const [hora, setHora] = useState('');
+  const [titulo, setTitulo] = useState(initialState);
+  const [descricao,setDescricao] = useState(initialState);
+  //const [materiais,setMateriais] = useState(initialState);
+  const [preco, setPreco] = useState(initialState);
+  const [data, setData] = useState(initialState);
+  const [hora, setHora] = useState(initialState);
+  const [carregando, setCarregando] = useState(false);
 
   useEffect(() =>{
     async function loadPerfil() {
@@ -104,8 +107,13 @@ export default function Ensinar({navigation}) {
 
     async function handleCriarAula(){
       parseInt(preco);
+      setCarregando(true)
+      if (aulaImagem === (null)){
+        alert('Complete todos os campos')
+        setCarregando(false)
+      }else{
       const data = new FormData();
-
+      
       data.append('aulaImagem',aulaImagem);   
       data.append('titulo',titulo);      
       data.append('descricao', descricao);
@@ -114,16 +122,20 @@ export default function Ensinar({navigation}) {
       data.append('professor',professor);
 
       await api.post('/aula',data);
-      alert("Aula criada com sucesso!") 
-      //const {_id} = response.data;
-     // alert(_id)
-    }
+      alert("Aula criada com sucesso!")
+      setCarregando(false)
+      setTitulo(initialState)
+      setDescricao(initialState)
+      setPreco(initialState)}
+    };
 
         return (
             <ImageBackground
             source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
             <StatusBar barStyle="light-content" backgroundColor="#7d330f" />
-            <ScrollView>
+            {carregando && <View style={styles.loading}>
+              <ActivityIndicator size='large' color={'#7d330f'}/>
+            </View> || <ScrollView>
                 <Text style={styles.title}>Hora de ensinar o que você sabe!</Text>
                 <Text style={styles.sugestao}>Esperamos que tenha um ótima experiência ao passar seu conhecimento para a alguém! ;)</Text>
                 
@@ -154,32 +166,34 @@ export default function Ensinar({navigation}) {
                         placeholderTextColor='#fff'
                         value={preco}
                         onChangeText={setPreco}
-                        style={styles.inputs}/>
-                    <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtButton} onPress={selecionarImagem}>
-                            <Text style={styles.title}>Imagem</Text>
-                        </TouchableOpacity>
-                      
-                      {preview && <Image style={styles.preview} source={preview}/>}
-                    </View>            
+                        style={styles.inputs}/>           
                         <View style={styles.linha}>
                         <TouchableOpacity style={styles.dtButton} onPress={setDateAndroid}>
-                            <Text style={styles.title}>Data</Text>
+                            <Text style={styles.btText}>Data - </Text>
+                            <Icon name='calendar-alt' color={'#fff'} size={22} style={{padding:3}}/>
                         </TouchableOpacity>
-                        <Text style={styles.title}>{androidDate}</Text>
+                        <Text style={styles.btText}>{androidDate}</Text>
                         </View>
                         <View style={styles.linha}>
                         <TouchableOpacity style={styles.dtButton} onPress={setTimeAndroid}>
-                            <Text style={styles.title}>Hora</Text>
+                            <Text style={styles.btText}>Hora - </Text>
+                            <Icon name='clock' color={'#fff'} size={22} style={{padding:3}}/>
                         </TouchableOpacity>
-                        <Text style={styles.title}>{chosenAndroidTime} Hrs</Text>
+                        <Text style={styles.btText}>{chosenAndroidTime} Hrs</Text>
                         </View>
-                    <Text style={styles.obsText}> OBS¹: O Endereço deverá ser combinado juntamento com seu aluno!</Text>
+                        <View style={styles.linha}>
+                        <TouchableOpacity style={styles.dtImagem} onPress={selecionarImagem}>
+                            <Text style={styles.btText}>Imagem - </Text>
+                            <Icon name='image' color={'#fff'} size={22} style={{padding:3}}/>
+                        </TouchableOpacity>
+                      {preview && <Image style={styles.preview} source={preview}/>}
+                    </View> 
+                    {/* <Text style={styles.obsText}> OBS¹: O Endereço deverá ser combinado juntamento com seu aluno!</Text> */}
                 </View> 
                 <TouchableOpacity style={styles.button} onPress={handleCriarAula}>
                     <Text style={styles.title}>Ensinar</Text>
                 </TouchableOpacity>
-              </ScrollView>
+              </ScrollView>}
             </ImageBackground>
         )
     }
@@ -205,13 +219,11 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'transparent',
         marginTop:15,
-        marginLeft:15,
-        marginRight:15
     },
     inputs:{
         height:40,
         borderColor:'#ccc',
-        borderWidth:2,
+        borderWidth:1,
         marginBottom:10,
         borderRadius:10,
         color:'#fff'
@@ -226,6 +238,7 @@ const styles = StyleSheet.create({
         padding:5,
     },
     dtButton:{
+        flexDirection:'row',  
         height:40,
         width:100,
         backgroundColor:'transparent',
@@ -240,23 +253,41 @@ const styles = StyleSheet.create({
         backgroundColor:'transparent',
         alignItems:'center',
         justifyContent:'center',
-        marginTop:80,
-        marginBottom:20,
+        marginVertical:20,
         padding:10,
-        marginLeft:10,
-        marginRight:10,
+        marginHorizontal:10,
         borderRadius:40,
         borderWidth:0.5,
         borderColor:'#fff'
     },
-    obsText:{
-        fontSize:14,
-        fontWeight:'bold',
+    btText:{
+        fontSize:18,
         color:'#fff',
-        paddingTop:10
     },
     preview:{
-      width:50,
-      height:50
-    }
+      alignSelf:'flex-end',
+      width:'50%',
+      height:120,
+      borderRadius:10
+    },
+    dtImagem:{
+      flexDirection:'row',  
+        height:40,
+        width:120,
+        backgroundColor:'transparent',
+        alignItems:'center',
+        justifyContent:'center',
+        marginRight:10,
+        borderColor:'#ccc',
+        borderRadius:40,
+        borderWidth:1
+    },
+    loading:{
+      justifyContent:'center',
+      alignItems:'center',
+      position:'absolute',
+      width:'100%',
+      height:'100%',
+      backgroundColor:'transparent',
+  }
   });

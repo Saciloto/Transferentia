@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, StatusBar,TouchableOpacity,TextInput,AsyncStorage} from 'react-native';
+import {View, Text, Image, StyleSheet, StatusBar,TouchableOpacity,TextInput,AsyncStorage} from 'react-native';
 import api from '../services/api';
 
 export default function Login({navigation}){
@@ -32,11 +32,8 @@ export default function Login({navigation}){
   }
 
   return(
-    <ImageBackground
-          source={{uri: 'https://s3-sa-east-1.amazonaws.com/rocketseat-cdn/background.png'}} 
-          style={styles.container}  resizeMode="cover">
-      <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
-
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#7d330f" />
       <Image  style={styles.logo} source={require('../assets/icon.png')}/>
       <View style={styles.containerView}>
         <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
@@ -55,9 +52,8 @@ export default function Login({navigation}){
         {/* campos de login do usuário */}
 
         {campo && 
-          <ImageBackground
-                  source={{uri: 'https://s3-sa-east-1.amazonaws.com/rocketseat-cdn/background.png'}} 
-                  style={styles.campoContainer}  resizeMode="stretch">
+          <View                
+             style={styles.campoContainer}>
             <Text style={styles.welcome}>Bem-vindo ao Transferentia!</Text>
             <TextInput 
                       style={styles.inputs}
@@ -79,7 +75,7 @@ export default function Login({navigation}){
                       value={senha}
                       onChangeText={setSenha}
                       />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> alert('Lamentamos, funcionalidade ainda em desenvolvimento.')}>
               <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.loginButton} onPress={handleAcessarButton}>
@@ -88,10 +84,10 @@ export default function Login({navigation}){
             <TouchableOpacity onPress={() => setCampo(null)}>
               <Text style={styles.voltar}>Voltar</Text>
             </TouchableOpacity>
-          </ImageBackground>
+          </View>
         }
       </View>
-    </ImageBackground>
+    </View>
   );
 }
   
@@ -100,6 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     paddingHorizontal: 20,
+    backgroundColor:'#7d330f'
   },
   logo:{
     width:200,
@@ -110,8 +107,7 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
-    marginTop:40,
-    marginBottom:40
+    marginVertical:40
   },
   esqueceuSenha: {
     color:'#f78232',
@@ -146,7 +142,8 @@ const styles = StyleSheet.create({
     position:'absolute',
     width:'100%',
     height:'100%',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:'#7d330f'
   },
   inputs:{
       color:'#fff',
