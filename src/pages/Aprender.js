@@ -8,15 +8,12 @@ import api from '../services/api';
 
 export default function Aprender({navigation}){
   const [aulas,setAulas] = useState([])
-  //const [aulaImagem,setAulaImagem] = useState('');
   const [reload,setReload] = useState(false);
   
 
   useEffect(()=> {
     async function loadAulas(){
       const response = await api.get('./aula')
-      //const {aulaImagem} = response.data
-      //setAulaImagem(aulaImagem)
       setAulas(response.data);
     }
     loadAulas();
