@@ -78,7 +78,7 @@ export default function Login({navigation}){
             <TouchableOpacity onPress={()=> alert('Lamentamos, funcionalidade ainda em desenvolvimento.')}>
               <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginButton} onPress={handleAcessarButton}>
+            <TouchableOpacity style={styles.acessarButton} onPress={handleAcessarButton}>
               <Text style={styles.welcome}>Acessar</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setCampo(null)}>
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
-    marginVertical:40
+    marginTop:30,
+    marginBottom:20
   },
   esqueceuSenha: {
     color:'#f78232',
@@ -151,6 +152,19 @@ const styles = StyleSheet.create({
       borderBottomColor:'#ccc',
       width:250,
       padding:20
+  },
+  acessarButton:{
+    backgroundColor:'transparent',
+    alignItems:'center',
+    justifyContent:'center',
+    marginTop:30,
+    padding:10,
+    marginHorizontal:10,
+    borderRadius:40,
+    borderWidth:0.5,
+    height:40,
+    width:150,
+    borderColor:'#fff'
   },
   voltar:{
     marginTop:20,

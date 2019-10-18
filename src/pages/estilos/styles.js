@@ -40,7 +40,9 @@ export const styles = StyleSheet.create({
       width:140,
       height:140,
       borderRadius:10,
-      marginVertical:5
+      marginVertical:5,
+      borderWidth:0.2,
+      borderColor:'#ccc'
     },
     containerListVert:{
       flex:1,
@@ -65,7 +67,9 @@ export const styles = StyleSheet.create({
       marginHorizontal:10,
       width:180,
       height:120,
-      borderRadius:10
+      borderRadius:10,
+      borderColor:'#ccc',
+      borderWidth:0.2
     },
     listDescricao:{
       flex:1,
