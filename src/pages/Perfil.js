@@ -9,6 +9,8 @@ export default function Perfil({navigation}){
     const [perfilName,setPerfilName] = useState('');
     const [perfilEmail,setPerfilEmail] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
+    const [celular,setCelular] = useState('');
+
 
     useEffect(() =>{
         async function loadPerfil() {
@@ -17,10 +19,11 @@ export default function Perfil({navigation}){
                 headers:{user_id}
             });
             console.log(response.data);
-            const {userName,email,userImagem} = response.data.user[0] 
-            setPerfilName(userName);
+            const {name,email,userImagem,celular} = response.data.user[0] 
+            setPerfilName(name);
             setPerfilEmail(email);
             setPerfilImage(userImagem);
+            setCelular(celular)
         }   
         loadPerfil()
     },[])
@@ -40,6 +43,7 @@ export default function Perfil({navigation}){
             <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
             <Text style={styles.userName}>{perfilName}</Text>
             <Text style={styles.userEspecial}>{perfilEmail}</Text>
+            <Text style={styles.userEspecial}>{celular}</Text>
             <ScrollView style={styles.scrollView}>
             <Text style={styles.userEspecial}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -70,9 +74,9 @@ const styles = StyleSheet.create({
     profileImage:{
         marginTop:15,
         marginBottom:20,
-        width:250,
-        height:250,
-        borderRadius:125,
+        width:200,
+        height:200,
+        borderRadius:100,
         borderWidth:1,
         borderColor:'#fff'
     },
@@ -114,7 +118,6 @@ const styles = StyleSheet.create({
     },
     sairBt:{
         flexDirection:'row-reverse',
-        //position:'absolute',
         marginTop:5,
         backgroundColor:'transparent',
         alignItems:'stretch',

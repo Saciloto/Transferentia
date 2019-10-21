@@ -1,8 +1,8 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState} from 'react';
 import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpacity,Image, AsyncStorage,ActivityIndicator} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import {TextInputMask} from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/FontAwesome5'
-
 
 import api from '../services/api';
 
@@ -10,10 +10,10 @@ function Cadastro({navigation}) {
     const initialState = '';
     const [preview,setPreview] = useState(null);
     const [userImagem, setUserImagem] = useState(null);
-    const [userName, setUsername] = useState(initialState);
     const [name, setName] = useState(initialState);
     const [email, setEmail] = useState(initialState);
     const [senha,setSenha] = useState(initialState);
+    const [celular, setCelular] = useState(null);
     const [carregando, setCarregando] = useState(false);
 
     
@@ -52,11 +52,11 @@ function Cadastro({navigation}) {
         setCarregando(true)
         const data = new FormData();
 
-        data.append('userName',userName);
         data.append('name',name);
         data.append('email', email);
-        data.append('userImagem',userImagem),         
-        data.append('senha',senha)
+        data.append('celular',celular);
+        data.append('userImagem',userImagem);       
+        data.append('senha',senha);
 
         const response = await api.post('./user',data);
         const {message} = response.data;
@@ -98,13 +98,7 @@ function Cadastro({navigation}) {
                     <TouchableOpacity style={styles.imageButton}onPress={selecionarImagem}>
                         <Icon name='image' color={'#fff'} size={22}/>
                         <Text style={styles.txtButton}>Selecionar Imagem</Text>
-                    </TouchableOpacity> }
-                    <TextInput placeholder='Nome de Usuário'
-                        placeholderTextColor='#fff' 
-                        style={styles.inputs}
-                        value={userName}
-                        onChangeText={setUsername}
-                        />                    
+                    </TouchableOpacity> }                  
                     <TextInput placeholder='Nome Completo'
                         placeholderTextColor='#fff' 
                         style={styles.inputs}
@@ -121,6 +115,13 @@ function Cadastro({navigation}) {
                         value={email}
                         onChangeText={setEmail}
                         />
+                    <TextInputMask placeholder={'Celular'}
+                        style={styles.inputs} 
+                        type={'cel-phone'}
+                        value={celular}
+                        onChangeText={setCelular}
+                        placeholderTextColor={'#fff'}
+                        />
                     <TextInput placeholder='Senha'
                         secureTextEntry={true}
                         placeholderTextColor='#fff' 
@@ -130,7 +131,6 @@ function Cadastro({navigation}) {
                         />
                 </View>
                 <View style={styles.containerInputs}>
-
                 <TouchableOpacity style={styles.button} onPress={handleCriarConta}>
                     <Text style={styles.txtButton}>Criar Conta</Text>
                 </TouchableOpacity>

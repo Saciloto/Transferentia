@@ -10,7 +10,7 @@ export default function EuProfessor({navigation}){
   useEffect(()=> {
     async function loadAulas(){
         const user_id = await AsyncStorage.getItem('user');
-        const response = await api.get('./aluno',{
+        const response = await api.get('./professor',{
             headers:{user_id}
         })
         const {message} = response.data;
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
         marginVertical:5,
         width:'50%',
         height: 120,
-        resizeMode:'cover'
+        resizeMode:'cover',
+        borderRadius:10
     }
 })
