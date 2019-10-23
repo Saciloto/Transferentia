@@ -1,5 +1,5 @@
-import React,{useState,useEffect,useCallback} from 'react';
-import {Text, View, ImageBackground,StatusBar, ScrollView,FlatList,TouchableOpacity,Image,RefreshControl,Button} from 'react-native';
+import React,{useState,useEffect,useCallback,useMemo} from 'react';
+import {Text, View, ImageBackground,StatusBar, ScrollView,FlatList,TouchableOpacity,Image,RefreshControl,Button,AsyncStorage} from 'react-native';
 import StarRating from 'react-native-star-rating'; 
 
 import {styles} from './estilos/styles';
@@ -11,8 +11,12 @@ export default function Aprender({navigation}){
   const [aulas,setAulas] = useState([])
   const [reload,setReload] = useState(false);
   const [starCount,setStarCount] = useState(4);
+  const [logedUser,setLogedUser]
 
   useEffect(()=> {
+    const user_id = await AsyncStorage.getItem('user'); 
+    setLogedUser(user_id);
+
     async function loadAulas(){
       const response = await api.get('./aula')
       setAulas(response.data);
@@ -30,14 +34,10 @@ export default function Aprender({navigation}){
     setReload(false)
   }, [reload])
 
-//   useEffect(()=>{
-//     const socket = io('http://localhost:3333/');//,{
-//     //  query:{userName}
-//     //});
-//     setTimeout(() =>{
-//     socket.emit('Hello',{message:'Hello WOrdl'})
-//   },3000);
-// },[])
+  useMemo(() => io('http://192.168.0.110:3333/',{ //irá refazer a conexão somente quando a varial loegedUser mudar
+    query:{user_id}
+  }),[logedUser]);
+
 return(
   <ImageBackground
     source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
