@@ -11,7 +11,6 @@ export default function Perfil({navigation}){
     const [perfilImage,setPerfilImage] = useState('');
     const [celular,setCelular] = useState('');
 
-
     useEffect(() =>{
         async function loadPerfil() {
             const user_id = await AsyncStorage.getItem('user');
@@ -26,12 +25,12 @@ export default function Perfil({navigation}){
             setCelular(celular)
         }   
         loadPerfil()
-    },[])
+    },[]);
     
     async function handleSair(){
         await AsyncStorage.clear();
         BackHandler.exitApp()
-    }
+    };
 
     return(
         <ImageBackground
@@ -59,7 +58,6 @@ export default function Perfil({navigation}){
                 <TouchableOpacity style={styles.funcoesButton} onPress={()=> navigation.navigate('EuProfessor')}>
                     <Text style={styles.userEspecial}>Instrutor</Text>
                     <Icon name='chalkboard-teacher' color={'#fff'} size={22} style={{padding:3, paddingLeft:3}}/>
-
                 </TouchableOpacity>
             </View>
         </ImageBackground>
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     },
     profileImage:{
         marginTop:15,
-        marginBottom:20,
+        marginBottom:10,
         width:200,
         height:200,
         borderRadius:100,
@@ -96,13 +94,13 @@ const styles = StyleSheet.create({
         borderWidth:0.2,
         borderColor:'#ccc',
         marginHorizontal:20,
-        marginVertical:10,
+        marginVertical:5,
         paddingHorizontal:10,
         borderRadius:10
     },
     bottoes:{
         flexDirection:'row',
-        marginVertical:10
+        marginVertical:5
     },
     loginButton:{
         backgroundColor:'transparent',

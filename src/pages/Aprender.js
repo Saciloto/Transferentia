@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useCallback} from 'react';
 import {Text, View, ImageBackground,StatusBar, ScrollView,FlatList,TouchableOpacity,Image,RefreshControl,Button} from 'react-native';
+import StarRating from 'react-native-star-rating'; 
 
 import {styles} from './estilos/styles';
 
@@ -9,7 +10,7 @@ import api from '../services/api';
 export default function Aprender({navigation}){
   const [aulas,setAulas] = useState([])
   const [reload,setReload] = useState(false);
-  
+  const [starCount,setStarCount] = useState(4);
 
   useEffect(()=> {
     async function loadAulas(){
@@ -23,8 +24,6 @@ export default function Aprender({navigation}){
     setReload(true);
     async function loadAulas(){
       const response = await api.get('./aula')
-      //const {aulaImagem} = response.data
-      //setAulaImagem(aulaImagem)
       setAulas(response.data);
     }
     loadAulas();
@@ -57,7 +56,12 @@ return(
           <View style={styles.listHorozintal}>
               <Text style={styles.tituloHorizontal} numberOfLines={1}>{item.titulo}</Text>
               <Image style={styles.imageHorizontal} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
-              <Button color={'#f78232'} title={'Ver aula'} onPress={() => alert('Em desenvolvimento')}/>
+              <Button color={'#f78232'} title={'Ver aula'} onPress={() => navigation.navigate('Aula',{aula_id:item._id,
+                                                                  aulaImagem:item.aulaImagem,
+                                                                  titulo:item.titulo,
+                                                                  data:item.data,
+                                                                  descricao:item.descricao,
+                                                                  preco:item.preco})}/>
           </View>   
         </TouchableOpacity>    
       )}
@@ -77,6 +81,15 @@ return(
               <View style={styles.cardVerti}>
                   <Image style={styles.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
                   <View style={styles.listDescricao}>
+                  <StarRating
+                              starStyle={{marginVertical:2}}
+                              disabled={true}
+                              maxStars={5}
+                              starSize={15}
+                              rating={starCount}
+                              selectedStar={setStarCount}
+                              fullStarColor={'#7d330f'}
+                    />
                       <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
                       <Text style={styles.preco}>R$ {item.preco}</Text>
                   </View>

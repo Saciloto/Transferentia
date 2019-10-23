@@ -64,8 +64,8 @@ export const styles = StyleSheet.create({
     imageVertical:{
       resizeMode:'cover',
       marginVertical:10,
-      marginHorizontal:10,
-      width:180,
+      marginHorizontal:5,
+      width:160,
       height:120,
       borderRadius:10,
       borderColor:'#ccc',
@@ -73,8 +73,8 @@ export const styles = StyleSheet.create({
     },
     listDescricao:{
       flex:1,
-      paddingHorizontal:10,
-      marginHorizontal:10,
+      paddingHorizontal:5,
+      marginHorizontal:5,
     },
     txtDescricao:{
       color:'#fff',
