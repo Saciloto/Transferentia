@@ -51,7 +51,8 @@ return(
                                                                   titulo:item.titulo,
                                                                   data:item.data,
                                                                   descricao:item.descricao,
-                                                                  preco:item.preco})}>
+                                                                  preco:item.preco,
+                                                                  professor_id:item.professor})}>
           <View style={styles.listHorozintal}>
               <Text style={styles.tituloHorizontal} numberOfLines={1}>{item.titulo}</Text>
               <Image style={styles.imageHorizontal} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
@@ -60,7 +61,8 @@ return(
                                                                   titulo:item.titulo,
                                                                   data:item.data,
                                                                   descricao:item.descricao,
-                                                                  preco:item.preco})}/>
+                                                                  preco:item.preco,
+                                                                  professor_id:item.professor})}/>
           </View>   
         </TouchableOpacity>    
       )}
@@ -74,7 +76,8 @@ return(
                                                                       titulo:item.titulo,
                                                                       data:item.data,
                                                                       descricao:item.descricao,
-                                                                      preco:item.preco})}>
+                                                                      preco:item.preco,
+                                                                      professor_id:item.professor                                                                      })}>
             <View style={styles.containerListVert}>
               <Text style={styles.tituloHorizontal}>{item.titulo}</Text>
               <View style={styles.cardVerti}>
