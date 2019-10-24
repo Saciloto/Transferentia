@@ -11,13 +11,12 @@ export default function Aprender({navigation}){
   const [aulas,setAulas] = useState([])
   const [reload,setReload] = useState(false);
   const [starCount,setStarCount] = useState(4);
-  const [logedUser,setLogedUser]
+  //const [logedUser,setLogedUser]
 
   useEffect(()=> {
-    const user_id = await AsyncStorage.getItem('user'); 
-    setLogedUser(user_id);
-
     async function loadAulas(){
+      // const user_id = await AsyncStorage.getItem('user'); 
+      // setLogedUser(user_id);
       const response = await api.get('./aula')
       setAulas(response.data);
     }
@@ -34,9 +33,9 @@ export default function Aprender({navigation}){
     setReload(false)
   }, [reload])
 
-  useMemo(() => io('http://192.168.0.110:3333/',{ //irá refazer a conexão somente quando a varial loegedUser mudar
-    query:{user_id}
-  }),[logedUser]);
+  // useMemo(() => io('http://192.168.0.110:3333/',{ //irá refazer a conexão somente quando a varial loegedUser mudar
+  //   query:{user_id}
+  // }),[logedUser]);
 
 return(
   <ImageBackground
@@ -81,7 +80,7 @@ return(
               <View style={styles.cardVerti}>
                   <Image style={styles.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
                   <View style={styles.listDescricao}>
-                  <StarRating
+                  {/* <StarRating
                               starStyle={{marginVertical:2}}
                               disabled={true}
                               maxStars={5}
@@ -89,9 +88,10 @@ return(
                               rating={starCount}
                               selectedStar={setStarCount}
                               fullStarColor={'#7d330f'}
-                    />
+                    /> */}
+                      <Text style={styles.preco}>Descrição:</Text>
                       <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
-                      <Text style={styles.preco}>R$ {item.preco}</Text>
+                      
                   </View>
               </View>  
             </View>

@@ -18,10 +18,10 @@ export default function Ensinar({navigation}) {
   const [professor, setProfessor] = useState();
   const [titulo, setTitulo] = useState(initialState);
   const [descricao,setDescricao] = useState(initialState);
-  //const [materiais,setMateriais] = useState(initialState);
+  const [materiais,setMateriais] = useState(initialState);
   const [preco, setPreco] = useState(initialState);
   const [data, setData] = useState(initialState);
-  const [hora, setHora] = useState(initialState);
+  //const [hora, setHora] = useState(initialState);
   const [carregando, setCarregando] = useState(false);
 
   useEffect(() =>{
@@ -117,6 +117,7 @@ export default function Ensinar({navigation}) {
       data.append('aulaImagem',aulaImagem);   
       data.append('titulo',titulo);      
       data.append('descricao', descricao);
+      data.append('materiais',materiais);
       data.append('data',androidDate);
       data.append('preco',preco);
       data.append('professor',professor);
@@ -154,12 +155,13 @@ export default function Ensinar({navigation}) {
                         value={descricao}
                         onChangeText={setDescricao}
                         style={[styles.inputs,styles.descricao]}/>
-                    {/* <TextInput 
+                    <TextInput 
                         placeholder="Materiais necessários"
                         placeholderTextColor='#fff'
+                        autoCapitalize='words'
                         value={materiais}
                         onChangeText={setMateriais}
-                        style={styles.inputs}/> */}
+                        style={styles.inputs}/>
                     <TextInput 
                         placeholder="Valor: "
                         keyboardType='numeric'
@@ -174,13 +176,13 @@ export default function Ensinar({navigation}) {
                         </TouchableOpacity>
                         <Text style={styles.btText}>{androidDate}</Text>
                         </View>
-                        <View style={styles.linha}>
+                        {/* <View style={styles.linha}>
                         <TouchableOpacity style={styles.dtButton} onPress={setTimeAndroid}>
                             <Text style={styles.btText}>Hora - </Text>
                             <Icon name='clock' color={'#fff'} size={22} style={{padding:3}}/>
                         </TouchableOpacity>
                         <Text style={styles.btText}>{chosenAndroidTime} Hrs</Text>
-                        </View>
+                        </View> */}
                         <View style={styles.linha}>
                         <TouchableOpacity style={styles.dtImagem} onPress={selecionarImagem}>
                             <Text style={styles.btText}>Imagem - </Text>

@@ -82,11 +82,10 @@ export const styles = StyleSheet.create({
     },
     preco:{
       color:'#ccc',
-      fontSize:18,
+      fontSize:16,
       fontWeight:'bold',
       marginHorizontal:10,
-      alignSelf:'flex-end',
-      textAlign:'right',
+      textAlign:'left',
       borderBottomWidth:0.3,
       borderBottomColor:'#f78232'
     }

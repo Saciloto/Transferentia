@@ -29,8 +29,8 @@ function Aula({navigation}){
             <Text style={estilo.descricao}>{navigation.getParam('descricao')}</Text>
         </ScrollView>
         <View style={estilo.footer}>
-            <Text style={estilo.preco}> Valor: {navigation.getParam('preco')} R$ Hora/Aula </Text>
-            <Button color={'#7169c1'} title={'Inscrever-se na aula'} onPress={handleInscricao} disabled={disable}></Button>  
+            <Text style={estilo.preco}> Valor: {navigation.getParam('preco')}R$</Text>
+            <Button color={'#7169c1'} title={'Gostaria de aprender'} onPress={handleInscricao} disabled={disable}></Button>  
         </View>
         </>
     )
