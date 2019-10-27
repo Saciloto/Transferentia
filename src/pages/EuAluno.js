@@ -5,7 +5,7 @@ import api from '../services/api';
 
 export default function EuAluno({navigation}){
 
-  const [aulas,setAulas] = useState([])  
+  const [aulas,setAulas] = useState([]);
 
   useEffect(()=> {
     async function loadAulas(){
@@ -38,7 +38,14 @@ export default function EuAluno({navigation}){
                     <Text>Data: {item.data}</Text>
                       <Image style={styles.image} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
                   </View>
-                  <Button color={'#f78232'} title={'Visualizar aula'} onPress={() => alert('Em desenvolvimento')}/>
+                  <Button color={'#f78232'} title={'Visualizar aula'} onPress={() => navigation.navigate('VerAula',{aula_id:item._id,
+                                                                  aulaImagem:item.aulaImagem,
+                                                                  titulo:item.titulo,
+                                                                  data:item.data,
+                                                                  descricao:item.descricao,
+                                                                  preco:item.preco,
+                                                                  materiais:item.materiais,
+                                                                  professor_id:item.professor})}/>
               </View>   
           )}
       />

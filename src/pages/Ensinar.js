@@ -131,8 +131,7 @@ export default function Ensinar({navigation}) {
     };
 
         return (
-            <ImageBackground
-            source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
+            <View  style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#7d330f" />
             {carregando && <View style={styles.loading}>
               <ActivityIndicator size='large' color={'#7d330f'}/>
@@ -141,62 +140,68 @@ export default function Ensinar({navigation}) {
                 <Text style={styles.sugestao}>Esperamos que tenha um ótima experiência ao passar seu conhecimento para a alguém! ;)</Text>
                 
                 <View style={styles.containerButtons}>   
-                    <TextInput 
+                    <View style={styles.inputsLine}>
+                      <TextInput 
                         placeholder='Titulo da aula'
-                        placeholderTextColor='#fff'
+                        placeholderTextColor='#7d330f'
                         value={titulo}
                         onChangeText={setTitulo}
                         style={styles.inputs}
                         />
-                    <TextInput 
+                      <Icon name='font' color={'#f78232'} size={22} style={{padding:3}}/>
+                    </View>
+                    <View style={styles.inputsLine}>
+                      <TextInput 
                         multiline={true}
                         placeholder='Descreva sua aula aqui...'
-                        placeholderTextColor='#fff'
+                        placeholderTextColor='#7d330f'
                         value={descricao}
                         onChangeText={setDescricao}
                         style={[styles.inputs,styles.descricao]}/>
-                    <TextInput 
+                      <Icon name='quote-left' color={'#f78232'} size={22} style={{padding:3}}/>
+                    </View>
+                    <View style={styles.inputsLine}>      
+                      <TextInput 
                         placeholder="Materiais necessários"
-                        placeholderTextColor='#fff'
+                        placeholderTextColor='#7d330f'
                         autoCapitalize='words'
                         value={materiais}
                         onChangeText={setMateriais}
                         style={styles.inputs}/>
-                    <TextInput 
+                      <Icon name='tools' color={'#f78232'} size={22} style={{padding:3}}/>
+                    </View>
+                    <View style={styles.inputsLine}> 
+                      <TextInput 
                         placeholder="Valor: "
                         keyboardType='numeric'
-                        placeholderTextColor='#fff'
+                        placeholderTextColor='#7d330f'
                         value={preco}
                         onChangeText={setPreco}
-                        style={styles.inputs}/>           
-                        <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtButton} onPress={setDateAndroid}>
-                            <Text style={styles.btText}>Data - </Text>
-                            <Icon name='calendar-alt' color={'#fff'} size={22} style={{padding:3}}/>
-                        </TouchableOpacity>
+                        style={styles.inputs}/>
+                      <Icon name='dollar-sign' color={'#f78232'} size={22} style={{padding:3}}/>
+                    </View>        
+                    <View style={styles.linha}>
+                    <Icon name='calendar-alt' color={'#f78232'} size={22} style={{padding:3,marginRight:3}}/>
+                      <TouchableOpacity style={styles.dtButton} onPress={setDateAndroid}>
+                          <Text style={styles.btText}>Data</Text>
+                      </TouchableOpacity>
                         <Text style={styles.btText}>{androidDate}</Text>
-                        </View>
-                        {/* <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtButton} onPress={setTimeAndroid}>
-                            <Text style={styles.btText}>Hora - </Text>
-                            <Icon name='clock' color={'#fff'} size={22} style={{padding:3}}/>
-                        </TouchableOpacity>
-                        <Text style={styles.btText}>{chosenAndroidTime} Hrs</Text>
-                        </View> */}
-                        <View style={styles.linha}>
-                        <TouchableOpacity style={styles.dtImagem} onPress={selecionarImagem}>
-                            <Text style={styles.btText}>Imagem - </Text>
-                            <Icon name='image' color={'#fff'} size={22} style={{padding:3}}/>
-                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.linha}>
+                    <Icon name='image' color={'#f78232'} size={22} style={{padding:3}}/>
+                      <TouchableOpacity style={styles.dtImagem} onPress={selecionarImagem}>
+                          <Text style={styles.btText}>Imagem</Text> 
+                      </TouchableOpacity>
                       {preview && <Image style={styles.preview} source={preview}/>}
                     </View> 
-                    {/* <Text style={styles.obsText}> OBS¹: O Endereço deverá ser combinado juntamento com seu aluno!</Text> */}
+                    <Text> OBS¹: O Endereço deverá ser combinado juntamento com seu aluno!</Text>
                 </View> 
                 <TouchableOpacity style={styles.button} onPress={handleCriarAula}>
-                    <Text style={styles.title}>Ensinar</Text>
+                    <Text style={styles.eninarBt}>Ensinar</Text>
+                    <Icon name='share-alt' color={'#fff'} size={25} style={{padding:3,marginLeft:5}}/>
                 </TouchableOpacity>
               </ScrollView>}
-            </ImageBackground>
+            </View>
         )
     }
 
@@ -205,7 +210,7 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     title: {
-      color: '#fff',
+      color: '#7d330f',
       fontSize: 22,
       fontWeight: 'bold',
       textAlign: 'center',
@@ -221,14 +226,22 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'transparent',
         marginTop:15,
+        marginHorizontal:10
+    },
+    inputsLine:{
+      flexDirection:'row-reverse',
+      width:'100%',
+      alignItems:'center',
     },
     inputs:{
         height:40,
         borderColor:'#ccc',
-        borderWidth:1,
+        borderWidth:0.5,
         marginBottom:10,
         borderRadius:10,
-        color:'#fff'
+        color:'#f78232',
+        width:'85%',
+        marginHorizontal:10
     },
     descricao:{
         maxHeight:100,
@@ -248,11 +261,12 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         marginRight:10,
         borderColor:'#ccc',
-        borderRadius:40,
-        borderWidth:1
+        borderRadius:10,
+        borderWidth:0.5,
     },
     button:{
-        backgroundColor:'transparent',
+        flexDirection:'row',
+        backgroundColor:'#f78232',
         alignItems:'center',
         justifyContent:'center',
         marginVertical:20,
@@ -260,11 +274,17 @@ const styles = StyleSheet.create({
         marginHorizontal:10,
         borderRadius:40,
         borderWidth:0.5,
-        borderColor:'#fff'
+        borderColor:'#ccc'
+    },
+    eninarBt:{
+      color: '#fff',
+      fontSize: 22,
+      fontWeight: 'bold',
+      textAlign: 'center',
     },
     btText:{
         fontSize:18,
-        color:'#fff',
+        color:'#7d330f',
     },
     preview:{
       alignSelf:'flex-end',
@@ -281,8 +301,8 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         marginRight:10,
         borderColor:'#ccc',
-        borderRadius:40,
-        borderWidth:1
+        borderRadius:10,
+        borderWidth:0.5
     },
     loading:{
       justifyContent:'center',

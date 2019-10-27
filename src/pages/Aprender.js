@@ -1,6 +1,7 @@
 import React,{useState,useEffect,useCallback,useMemo} from 'react';
 import {Text, View, ImageBackground,StatusBar, ScrollView,FlatList,TouchableOpacity,Image,RefreshControl,Button,AsyncStorage} from 'react-native';
 import StarRating from 'react-native-star-rating'; 
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import {styles} from './estilos/styles';
 
@@ -38,10 +39,7 @@ export default function Aprender({navigation}){
   // }),[logedUser]);
 
 return(
-  <ImageBackground
-    source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
-  <StatusBar barStyle="light-content" backgroundColor="#111" />
-  <ScrollView refreshControl={<RefreshControl refreshing={reload} onRefresh={onReload}/>}>
+  <ScrollView refreshControl={<RefreshControl refreshing={reload} onRefresh={onReload} style={{backgroundColor:'#fff'}}/>}>
     <Text style={styles.title}>Bem-vindo ao Transferentia!</Text>
     {/*Lista horizontal*/}
     <FlatList style={{paddingTop:5}} horizontal data={aulas} keyExtractor={item => item._id}
@@ -54,15 +52,8 @@ return(
                                                                   preco:item.preco,
                                                                   professor_id:item.professor})}>
           <View style={styles.listHorozintal}>
-              <Text style={styles.tituloHorizontal} numberOfLines={1}>{item.titulo}</Text>
+              <Text style={styles.tituloHorizontal} numberOfLines={1} >{item.titulo}</Text>
               <Image style={styles.imageHorizontal} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
-              <Button color={'#f78232'} title={'Ver aula'} onPress={() => navigation.navigate('Aula',{aula_id:item._id,
-                                                                  aulaImagem:item.aulaImagem,
-                                                                  titulo:item.titulo,
-                                                                  data:item.data,
-                                                                  descricao:item.descricao,
-                                                                  preco:item.preco,
-                                                                  professor_id:item.professor})}/>
           </View>   
         </TouchableOpacity>    
       )}
@@ -79,30 +70,23 @@ return(
                                                                       preco:item.preco,
                                                                       professor_id:item.professor                                                                      })}>
             <View style={styles.containerListVert}>
-              <Text style={styles.tituloHorizontal}>{item.titulo}</Text>
+              <View style={styles.lineTitle}>
+                <Icon name='quote-left' color={'#f78232'} size={22} style={{padding:3}}/>
+                <Text style={styles.tituloVertical}>{item.titulo}</Text>
+              </View>
               <View style={styles.cardVerti}>
                   <Image style={styles.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
                   <View style={styles.listDescricao}>
-                  {/* <StarRating
-                              starStyle={{marginVertical:2}}
-                              disabled={true}
-                              maxStars={5}
-                              starSize={15}
-                              rating={starCount}
-                              selectedStar={setStarCount}
-                              fullStarColor={'#7d330f'}
-                    /> */}
-                      <Text style={styles.preco}>Descrição:</Text>
+                      <Text style={styles.titleDescricao}>Descrição:</Text>
                       <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
                       
                   </View>
-              </View>  
+              </View>
             </View>
           </TouchableOpacity>
         )}
       />
     </ScrollView>
-    </ImageBackground>
   )
 }
 

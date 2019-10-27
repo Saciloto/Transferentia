@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
       paddingHorizontal: 0,
     },
     title: {
-      color: '#fff',
+      color: '#f78232',
       fontSize: 22,
       fontWeight: 'bold',
       textAlign: 'center',
@@ -21,13 +21,19 @@ export const styles = StyleSheet.create({
     },
     listHorozintal:{
       flex:1,
-      paddingTop:10,
       alignItems:'center',
       justifyContent:'space-between',
-      marginHorizontal:20
+      marginHorizontal:10,
+      backgroundColor:'#fffff1',
+      borderWidth:0.5,
+      borderRadius:10,
+      borderColor:'#ccc',
+      width:160,
+      height:180,
+      
     },
     tituloHorizontal:{
-      color:'#fff',
+      color:'#f78232',
       fontSize:20,
       fontWeight:'bold',
       paddingTop:5,
@@ -37,8 +43,8 @@ export const styles = StyleSheet.create({
     },
     imageHorizontal:{
       resizeMode:'cover',
-      width:140,
-      height:140,
+      width:'95%',
+      height:130,
       borderRadius:10,
       marginVertical:5,
       borderWidth:0.2,
@@ -53,7 +59,8 @@ export const styles = StyleSheet.create({
       borderColor:'#ccc',
       marginVertical:5,
       marginHorizontal:10,
-      paddingHorizontal:5
+      paddingHorizontal:5,
+      backgroundColor:'#fffffa'
     },
     cardVerti:{
       flex:1,
@@ -68,7 +75,7 @@ export const styles = StyleSheet.create({
       width:160,
       height:120,
       borderRadius:10,
-      borderColor:'#ccc',
+      borderColor:'#7d330f',
       borderWidth:0.2
     },
     listDescricao:{
@@ -77,17 +84,29 @@ export const styles = StyleSheet.create({
       marginHorizontal:5,
     },
     txtDescricao:{
-      color:'#fff',
+      color:'#7d330f',
       fontSize:14,
     },
-    preco:{
-      color:'#ccc',
+    titleDescricao:{
+      color:'#7d330f',
       fontSize:16,
       fontWeight:'bold',
       marginHorizontal:10,
       textAlign:'left',
       borderBottomWidth:0.3,
       borderBottomColor:'#f78232'
+    },
+    lineTitle:{
+      flexDirection:'row',
+      borderBottomWidth:0.3,
+      borderBottomColor:'#f78232'
+    },
+    tituloVertical:{
+      color:'#f78232',
+      fontSize:20,
+      fontWeight:'bold',
+      paddingTop:5,
+      paddingHorizontal:5,
     }
   });
 

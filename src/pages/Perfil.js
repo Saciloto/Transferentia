@@ -33,34 +33,43 @@ export default function Perfil({navigation}){
     };
 
     return(
-        <ImageBackground
-            source={require('../assets/preto.jpg')} style={styles.container}  resizeMode="cover">
+        <View style={styles.container}>
             <TouchableOpacity style={styles.sairBt} onPress={handleSair}>
-                <Icon name='sign-out-alt' color={'#fff'} size={22} style={{padding:3}}/>
+                <Icon name='sign-out-alt' color={'#f78232'} size={22} style={{padding:3}}/>
                 <Text style={styles.userEspecial}>Sair</Text>
             </TouchableOpacity>
-            <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
-            <Text style={styles.userName}>{perfilName}</Text>
-            <Text style={styles.userEspecial}>{perfilEmail}</Text>
-            <Text style={styles.userEspecial}>{celular}</Text>
+            <View style={styles.userDados}>
+                <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
+                <View style={styles.userList} >
+                    <Text style={styles.userName}>{perfilName}</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Icon name='at' color={'#f78232'} size={22} style={{padding:3, paddingLeft:3}}/>
+                        <Text style={styles.userEspecial}>{perfilEmail}</Text>
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                        <Icon name='whatsapp' color={'#f78232'} size={22} style={{padding:3, paddingLeft:3}}/>
+                        <Text style={styles.userEspecial}>{celular}</Text>
+                    </View>
+                </View>
+            </View>
             <ScrollView style={styles.scrollView}>
-            <Text style={styles.userEspecial}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+                <Text style={styles.userEspecial}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
             </ScrollView>
-            <Text style={styles.userEspecial}>Minhas turmas como:</Text>
-            <View style={styles.bottoes}>
-                <TouchableOpacity style={styles.funcoesButton} onPress={() => navigation.navigate('EuAluno') }>
-                    <Text style={styles.userEspecial}>Aluno</Text>
+            <Text style={styles.userName}>Minhas turmas como:</Text>
+            <View style={styles.containerButtons}>
+                <TouchableOpacity style={styles.buttons} onPress={() => navigation.navigate('EuAluno') }>
+                    <Text style={styles.txtButtons}>Aluno</Text>
                     <Icon name='book-reader' color={'#fff'} size={22}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.funcoesButton} onPress={()=> navigation.navigate('EuProfessor')}>
-                    <Text style={styles.userEspecial}>Instrutor</Text>
+                <TouchableOpacity style={styles.buttons} onPress={()=> navigation.navigate('EuProfessor')}>
+                    <Text style={styles.txtButtons}>Instrutor</Text>
                     <Icon name='chalkboard-teacher' color={'#fff'} size={22} style={{padding:3, paddingLeft:3}}/>
                 </TouchableOpacity>
             </View>
-        </ImageBackground>
+        </View>
     )
 }
 
@@ -69,24 +78,33 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems:'center'
     },
+    userDados:{
+        flexDirection:'row',
+    },
+    userList:{
+        alignItems:'stretch',
+        justifyContent:'center',
+        flexDirection:'column',
+        marginHorizontal:15
+    },
     profileImage:{
         marginTop:15,
         marginBottom:10,
-        width:200,
-        height:200,
-        borderRadius:100,
+        width:120,
+        height:120,
+        borderRadius:60,
         borderWidth:1,
-        borderColor:'#fff'
+        borderColor:'#f78232'
     },
     userName:{
-        color:'#fff',
-        fontSize:26,
+        color:'#7d330f',
+        fontSize:22,
         fontWeight:'bold',
         textAlign:'left'
     },
     userEspecial:{
-        color:'#fff',
-        fontSize:20,
+        color:'#000',
+        fontSize:18,
         textAlign:'left'
     },
     scrollView:{
@@ -98,9 +116,12 @@ const styles = StyleSheet.create({
         paddingHorizontal:10,
         borderRadius:10
     },
-    bottoes:{
+    containerButtons:{
         flexDirection:'row',
-        marginVertical:5
+        marginVertical:5,
+        borderWidth:0.2,
+        borderColor:'#ccc',
+        borderRadius:10,
     },
     loginButton:{
         backgroundColor:'transparent',
@@ -127,9 +148,9 @@ const styles = StyleSheet.create({
         width:75,
         borderColor:'#ccc'
     },
-    funcoesButton:{
+    buttons:{
         flexDirection:'row',
-        backgroundColor:'transparent',
+        backgroundColor:'#f78232',
         alignItems:'center',
         justifyContent:'space-between',
         padding:10,
@@ -139,5 +160,10 @@ const styles = StyleSheet.create({
         height:40,
         width:120,
         borderColor:'#ccc'
-    }
+    },
+    txtButtons:{
+      color: '#fff',
+      fontSize: 18,
+      textAlign: 'center',
+    },
 })

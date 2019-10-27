@@ -11,6 +11,7 @@ import Aula from './pages/Aula';
 import  Icon  from 'react-native-vector-icons/FontAwesome5';
 import EuProfessor from './pages/EuProfessor';
 import EuAluno from './pages/EuAluno';
+import VerAula from './pages/VerAula';
 
 const Routes = createBottomTabNavigator({
     Aprender:{
@@ -88,6 +89,15 @@ const Routes = createBottomTabNavigator({
                         textAlign:'center',
                     }
                 }
+           },
+           VerAula:{
+               screen:VerAula,
+               navigationOptions:{
+                   headerStyle:{
+                       backgroundColor:'#7d330f',
+                       textColor:'#fff'
+                   }
+               }
            }
 
 

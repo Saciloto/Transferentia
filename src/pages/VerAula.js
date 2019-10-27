@@ -3,8 +3,7 @@ import {View,Text,Image,ScrollView, StyleSheet,Button,AsyncStorage} from 'react-
 
 import api from '../services/api';
 
-function Aula({navigation}){
-    const [disable,setDisable] = useState(false);
+function VerAula({navigation}){
     const [perfilName,setPerfilName] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
 
@@ -30,49 +29,30 @@ function Aula({navigation}){
         loadAula();
       }, []);
 
-    async function handleInscricao(){
-        const user_id = await AsyncStorage.getItem('user');
-        const aula_id = navigation.getParam('aula_id');
-        
-        response =  await api.patch('./aula',{
-            user_id:user_id,
-            aula_id:aula_id}
-        );
-        const {message} = response.data
-        alert(message)
-        setDisable(true)
-    }
 
     const uriImage = navigation.getParam('aulaImagem')
     return(
-        <>
         <ScrollView>
             <Image style={estilo.image} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+uriImage}}/>
             <Text style={estilo.title}>{navigation.getParam('titulo')}</Text>
             <Text style={estilo.descricao}>{navigation.getParam('descricao')}</Text>
-            <Text style={estilo.tituloProfessor}>A partir de: {navigation.getParam('data')}</Text>
-            {/* <Text>Materias Necessários: {navigation.getParam('materiais')} </Text> */}
+            <Text style={estilo.descricao}>Materias Necessários: <Text>{navigation.getParam('materiais')}</Text> </Text>
             <View style={estilo.containerListVert}>
                     <Text style={estilo.tituloProfessor}>Dados do Instrutor</Text>
                         <View style={estilo.cardVerti}>
                     <Image style={estilo.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
                         <View style={estilo.listDescricao}>
                     <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Nome:</Text> {perfilName}</Text>
-                    <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Descrição:</Text> Conhecimento em informática, anos de experiencias, etc, loren ipsun Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Descrição:</Text>Loren ipsun Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             Ut enim ad minim veniam.</Text>
                         </View>
                 </View>
             </View>
         </ScrollView>
-        <View style={estilo.footer}>
-            <Text style={estilo.preco}> Valor: {navigation.getParam('preco')}R$</Text>
-            <Button color={'#f78232'} title={'Gostaria de aprender'} onPress={handleInscricao} disabled={disable}></Button>  
-        </View>
-        </>
     )
 }
 
-export default Aula;
+export default VerAula;
 
 const estilo = StyleSheet.create({
     image:{
@@ -87,17 +67,16 @@ const estilo = StyleSheet.create({
         textAlign:'center',
         fontSize:25,
         fontWeight:'bold',
-        marginTop:10,
-        color:'#7d330f'
+        marginTop:10
     },
     descricao:{
         textAlign:'justify',
         marginVertical:15,
         marginHorizontal:10,
-        fontSize:20,
+        fontSize:18,
     },
     footer:{
-        height:60,
+        height:70,
         backgroundColor:'#7d330f',
         borderTopWidth:0.2,
         opacity:50,
@@ -148,7 +127,7 @@ const estilo = StyleSheet.create({
     tituloProfessor:{
         alignSelf:'center',
         fontSize:17,
-        color:'#7d330f',
+        color:'#000',
         fontWeight:'bold'
     }
 })
