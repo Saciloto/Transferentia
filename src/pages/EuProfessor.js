@@ -1,14 +1,15 @@
 import React,{useState,useEffect} from 'react';
 import {Text, View, ScrollView,FlatList,Image,StyleSheet,AsyncStorage,Button} from 'react-native';
 
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
 import api from '../services/api';
 // Tela responsável por exibir as aulas em que o usuário é o instrutor
 export default function EuProfessor({navigation}){
 
   const [aulas,setAulas] = useState([]);
   const [users,setUsers] = useState([]);
-  const [nameAluno,setNameAluno] = useState([])
-  const [array,setArray] =useState([])
+
   useEffect(()=> {
     async function loadAulas(){
         const user_id = await AsyncStorage.getItem('user');
@@ -30,37 +31,39 @@ export default function EuProfessor({navigation}){
 
 
 
-        // function listaAlunos(alunos){
-            
-        //     // alunos.forEach(async user_id => {
-        //     //     //alert(alunos)
-        //     //      const response = await api.get('/user',{
-        //     //          headers:{user_id:user_id}
-        //     //      });
-        //     //       console.log('User:', response.data.user);
-        //     //     //  const {name, celular} = response.data.user[0]
-        //     //      temp.push(response.data.user[0])
-        //     //      //setUsers(temp)
-        //     //      //setUsers(response.data.user)
-        //     //      //alert(name)
-        //     //      //setUsers(response.data.user[0])
-        //     //      //setNameAluno(...name)
-        //     // });
-        //     // console.log('temp:',temp)
-        //     // setUsers(temp)
-        //     // console.log('users:',users)
-        //     // //setNameAluno(name)
+        // function listaAlunos(aula_id){
+        //     alunos.forEach(async user_id => {
+        //         console.log('Array de alunos:',alunos)
+        //          const response = await api.get('/lista',{
+        //             temp
+        //          });
+        //           console.log('User:', response.data.user);
+        //         //  const {name, celular} = response.data.user[0]
+        //          //temp.push(response.data.user[0])
+        //          //setUsers(temp)
+        //          //setUsers(response.data.user)
+        //          //alert(name)
+        //          //setUsers(response.data.user[0])
+        //          //setNameAluno(...name)
+        //     });
+        //     console.log('temp:',temp)
+        //     setUsers(temp.indexOf(0))
+        //     console.log('users:',users)
+        //     //setNameAluno(name)
         // };
 
-        async function listaAlunos(){
+        async function listaAlunos(aula_id){
             //setArray(alunos)
-            //const response = await api.get('/lista')
-            alert('Em desemvolvimento')
-            //setUsers(response.data)
+            const response = await api.get('/lista',{
+                headers:{aula_id}
+            })
+            const {nomes} = response.data
+            setUsers(nomes);
         }
     return(
         <ScrollView>
             <Text style={styles.title}>Essas são as suas aulas!</Text>
+            <View style={styles.cardContainer}>
             <FlatList 
                 data={aulas}
                 keyExtractor={item => item._id}
@@ -69,22 +72,34 @@ export default function EuProfessor({navigation}){
                         <Text style={styles.tituloAula}>{item.titulo}  </Text>
                         <View style={styles.imageContainer}>
                             <Text>Número de alunos:{item.alunos.length} </Text>
+                            
                             <Image style={styles.image} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
                         </View>
-                        <Button color={'#f78232'} title={'Visualizar alunos'} onPress={() => listaAlunos()}/>
+                        <Button color={'#f78232'} title={'Visualizar alunos'} onPress={() => listaAlunos(item._id)}/>
+                        
                     </View>   
                 )}
-            />                
-                {/* <FlatList
+            /> 
+                <Text>Pessoas que gostaram da sua instrução:  
+                    <Text> {users.length} </Text>
+                </Text>
+                <FlatList
                     data={users}
-                    keyExtractor={item => {item._id}}
+                    keyExtractor={item => item.id}
                     renderItem={({item}) => (
-                        <View>
-                            <Text style={styles.tituloAula}> {item.name} </Text>
+                    <View style={styles.listaAlunos}>
+                        <View style={styles.listaCard}>
+                            <Icon name="user" color={"#f78232"} size={22} />
+                            <Text style={styles.tituloAula}> {item.nome} </Text>
+                        </View>
+                        <View style={styles.listaCard}>
+                            <Icon name='whatsapp' color={'#f78232'} size={22}/>
                             <Text> {item.celular} </Text>
                         </View>
+                    </View>
                     )}
-                /> */}
+                />
+            </View>
         </ScrollView>
     )
 }
@@ -119,5 +134,18 @@ const styles = StyleSheet.create({
         height: 120,
         resizeMode:'cover',
         borderRadius:10
+    },
+    listaCard:{
+        flexDirection:'row',
+    },  
+    listaAlunos:{
+        alignItems:'baseline',
+        justifyContent:'center',
+        borderWidth:0.2,
+        borderColor:'#f78232',
+        marginVertical:2,
+        marginHorizontal:10,
+        paddingHorizontal:2,
+        paddingVertical:2
     }
 })
