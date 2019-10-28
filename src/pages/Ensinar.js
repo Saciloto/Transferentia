@@ -3,6 +3,7 @@ import { Text, View,ImageBackground,StatusBar,StyleSheet,TextInput,DatePickerAnd
         TimePickerAndroid,Image,ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import api from '../services/api';
 import ImagePicker from 'react-native-image-picker';
+import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -23,6 +24,8 @@ export default function Ensinar({navigation}) {
   const [data, setData] = useState(initialState);
   //const [hora, setHora] = useState(initialState);
   const [carregando, setCarregando] = useState(false);
+  const [modal,setModal] = useState(false);
+  const [aviso,setAviso] = useState(false);
 
   useEffect(() =>{
     async function loadPerfil() {
@@ -108,8 +111,8 @@ export default function Ensinar({navigation}) {
     async function handleCriarAula(){
       parseInt(preco);
       setCarregando(true)
-      if (aulaImagem === (null)){
-        alert('Complete todos os campos')
+      if (aulaImagem === (null) && titulo === initialState && descricao === initialState && preco === initialState){
+        setAviso(true)
         setCarregando(false)
       }else{
       const data = new FormData();
@@ -123,7 +126,7 @@ export default function Ensinar({navigation}) {
       data.append('professor',professor);
 
       await api.post('/aula',data);
-      alert("Aula criada com sucesso!")
+      setModal(true)
       setCarregando(false)
       setTitulo(initialState)
       setDescricao(initialState)
@@ -201,6 +204,22 @@ export default function Ensinar({navigation}) {
                     <Icon name='share-alt' color={'#fff'} size={25} style={{padding:3,marginLeft:5}}/>
                 </TouchableOpacity>
               </ScrollView>}
+              <SCLAlert 
+                onRequestClose={()=>setModal(false)}
+                theme='success'
+                show={modal}
+                title={'Pronto!'}
+                subtitle={'Agradecemos por querer compartilhar seu conhecimento!'}>
+                <SCLAlertButton theme='success' onPress={()=> setModal(false)}>Obrigado</SCLAlertButton>
+              </SCLAlert>
+              <SCLAlert 
+                onRequestClose={()=>setAviso(false)}
+                theme='warning'
+                show={aviso}
+                title={'Opa!'}
+                subtitle={'Complete todos os campos antes de continuar!'}>
+                <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Entendi</SCLAlertButton>
+              </SCLAlert>
             </View>
         )
     }

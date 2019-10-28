@@ -1,12 +1,17 @@
 import React,{useState,useEffect} from 'react';
 import {View,Text,Image,ScrollView, StyleSheet,Button,AsyncStorage} from 'react-native';
 
+import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
+
 import api from '../services/api';
 
 function Aula({navigation}){
     const [disable,setDisable] = useState(false);
     const [perfilName,setPerfilName] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
+    const [modal,setModal] = useState(false);
+    const [badmodal,setBadModal] = useState(false);
+    const [message,setMessage] = useState('');
 
 
     useEffect(()=> {
@@ -31,6 +36,7 @@ function Aula({navigation}){
       }, []);
 
     async function handleInscricao(){
+        
         const user_id = await AsyncStorage.getItem('user');
         const aula_id = navigation.getParam('aula_id');
         
@@ -38,8 +44,14 @@ function Aula({navigation}){
             user_id:user_id,
             aula_id:aula_id}
         );
-        const {message} = response.data
-        alert(message)
+        const {message,badMessage} = response.data
+        if (badMessage){
+            setBadModal(true)
+            setMessage(badMessage)
+        }else{
+            setModal(true)
+            setMessage(message)
+        }
         setDisable(true)
     }
 
@@ -63,6 +75,22 @@ function Aula({navigation}){
                         </View>
                 </View>
             </View>
+            <SCLAlert 
+                onRequestClose={()=>setModal(false)}
+                theme='success'
+                show={modal}
+                title={'Pronto!'}
+                subtitle={message}>
+                <SCLAlertButton theme='success' onPress={()=> setModal(false)}>Entendi</SCLAlertButton>
+            </SCLAlert>
+            <SCLAlert 
+                onRequestClose={()=>setModal(false)}
+                theme='warning'
+                show={badmodal}
+                title={'Opa!'}
+                subtitle={message}>
+                <SCLAlertButton theme='warning' onPress={()=> setBadModal(false)}>Entendi</SCLAlertButton>
+            </SCLAlert>
         </ScrollView>
         <View style={estilo.footer}>
             <Text style={estilo.preco}> Valor: {navigation.getParam('preco')}R$</Text>
