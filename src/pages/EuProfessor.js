@@ -1,14 +1,15 @@
 import React,{useState,useEffect} from 'react';
-import {Text, View, ScrollView,FlatList,Image,StyleSheet,AsyncStorage,Button} from 'react-native';
-
+import {Text, View, ScrollView,FlatList,Image,AsyncStorage,Button} from 'react-native';
+import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import {styles} from '../pages/estilos/styles'
 
 import api from '../services/api';
 // Tela responsável por exibir as aulas em que o usuário é o instrutor
 export default function EuProfessor({navigation}){
 
   const [aulas,setAulas] = useState([]);
-  const [users,setUsers] = useState([]);
+  const [aviso,setAviso] = useState(false);
 
   useEffect(()=> {
     async function loadAulas(){
@@ -23,129 +24,41 @@ export default function EuProfessor({navigation}){
             const {aula} = response.data;
             setAulas(aula);
         }else{
-            alert(message);
+            setAviso(true)
         }
     }
     loadAulas();
   }, []);
 
-
-
-        // function listaAlunos(aula_id){
-        //     alunos.forEach(async user_id => {
-        //         console.log('Array de alunos:',alunos)
-        //          const response = await api.get('/lista',{
-        //             temp
-        //          });
-        //           console.log('User:', response.data.user);
-        //         //  const {name, celular} = response.data.user[0]
-        //          //temp.push(response.data.user[0])
-        //          //setUsers(temp)
-        //          //setUsers(response.data.user)
-        //          //alert(name)
-        //          //setUsers(response.data.user[0])
-        //          //setNameAluno(...name)
-        //     });
-        //     console.log('temp:',temp)
-        //     setUsers(temp.indexOf(0))
-        //     console.log('users:',users)
-        //     //setNameAluno(name)
-        // };
-
-        async function listaAlunos(aula_id){
-            //setArray(alunos)
-            const response = await api.get('/lista',{
-                headers:{aula_id}
-            })
-            const {nomes} = response.data
-            setUsers(nomes);
-        }
     return(
         <ScrollView>
-            <Text style={styles.title}>Essas são as suas aulas!</Text>
-            <View style={styles.cardContainer}>
-            <FlatList 
-                data={aulas}
-                keyExtractor={item => item._id}
-                renderItem={({item}) => (
-                    <View style={styles.cardContainer}>
-                        <Text style={styles.tituloAula}>{item.titulo}  </Text>
-                        <View style={styles.imageContainer}>
-                            <Text>Número de alunos:{item.alunos.length} </Text>
-                            
-                            <Image style={styles.image} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
-                        </View>
-                        <Button color={'#f78232'} title={'Visualizar alunos'} onPress={() => listaAlunos(item._id)}/>
-                        
-                    </View>   
-                )}
-            /> 
-                <Text>Pessoas que gostaram da sua instrução:  
-                    <Text> {users.length} </Text>
-                </Text>
-                <FlatList
-                    data={users}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => (
-                    <View style={styles.listaAlunos}>
-                        <View style={styles.listaCard}>
-                            <Icon name="user" color={"#f78232"} size={22} />
-                            <Text style={styles.tituloAula}> {item.nome} </Text>
-                        </View>
-                        <View style={styles.listaCard}>
-                            <Icon name='whatsapp' color={'#f78232'} size={22}/>
-                            <Text> {item.celular} </Text>
-                        </View>
+            <Text style={styles.subTitle}>Essas são as suas aulas!</Text>
+            <FlatList style={{paddingTop:10}} data={aulas} keyExtractor={item => item._id}
+                        renderItem={({item}) => (
+                <View style={styles.containerListVert}>
+                <View style={styles.lineTitle}>
+                    <Icon name='quote-left' color={'#f78232'} size={22} style={{padding:3}}/>
+                    <Text style={styles.tituloVertical}>{item.titulo}</Text>
+                </View>
+                <View style={styles.cardVerti}>
+                    <Image style={styles.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
+                    <View style={styles.listDescricao}>
+                        <Text style={styles.titleDescricao}>Descrição:</Text>
+                        <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
                     </View>
-                    )}
-                />
-            </View>
+                </View>
+                <Button color={'#f78232'} title={'Visualizar alunos'} onPress={() => navigation.navigate('VerAlunos',{aula_id:item._id,aula_titulo:item.titulo})}/> 
+                </View>
+            )}
+            />
+            <SCLAlert 
+                onRequestClose={()=>setAviso(false)}
+                theme='warning'
+                show={aviso}
+                title={'Opa!'}
+                subtitle={'Você não compartilhou nenhuma instrução, comece agora mesmo!!'}>
+                <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Vou começar!</SCLAlertButton>
+              </SCLAlert>
         </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    title:{
-        fontSize:20,
-        fontWeight:'bold',
-        textAlign:'center',
-        color:'#f78232'
-    },
-    cardContainer:{
-        borderWidth:1,
-        borderColor:'#f78232',
-        paddingHorizontal:10,
-        paddingVertical:10,
-        marginVertical:5,
-        marginHorizontal:3
-    },
-    tituloAula:{
-        fontSize:16,
-        fontWeight:'bold'
-    },
-    imageContainer:{
-        flexDirection:'row',
-    }, 
-    image:{
-        flex:1,
-        marginLeft:10,
-        marginVertical:5,
-        width:'50%',
-        height: 120,
-        resizeMode:'cover',
-        borderRadius:10
-    },
-    listaCard:{
-        flexDirection:'row',
-    },  
-    listaAlunos:{
-        alignItems:'baseline',
-        justifyContent:'center',
-        borderWidth:0.2,
-        borderColor:'#f78232',
-        marginVertical:2,
-        marginHorizontal:10,
-        paddingHorizontal:2,
-        paddingVertical:2
-    }
-})

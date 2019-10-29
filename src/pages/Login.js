@@ -1,12 +1,19 @@
 import React,{useState,useEffect} from 'react';
 import {View, Text, Image, StyleSheet, StatusBar,TouchableOpacity,TextInput,AsyncStorage} from 'react-native';
+import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
+
 import api from '../services/api';
+
 
 export default function Login({navigation}){
   const initialState = '';
   const [campo, setCampo] = useState(false)
   const [email, setEmail] = useState(initialState);
   const [senha, setSenha] = useState(initialState);
+  const [message,setMessage] = useState('');
+  const [aviso,setAviso] = useState(false);
+
+
 
   useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
         AsyncStorage.getItem('user').then(user =>{
@@ -22,8 +29,8 @@ export default function Login({navigation}){
     const {message} = response.data;
         
         if (message){
-            alert(message)
-            
+            setMessage(message)
+            setAviso(true)
         }else{
           const {_id} = response.data
           await AsyncStorage.setItem('user',_id);
@@ -87,6 +94,14 @@ export default function Login({navigation}){
           </View>
         }
       </View>
+      <SCLAlert 
+            onRequestClose={()=>setAviso(false)}
+            theme='warning'
+            show={aviso}
+            title={'Opa!'}
+            subtitle={message}>
+            <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Vou começar!</SCLAlertButton>
+      </SCLAlert>
     </View>
   );
 }

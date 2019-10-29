@@ -38,8 +38,9 @@ export default function Perfil({navigation}){
                 <Icon name='sign-out-alt' color={'#f78232'} size={22} style={{padding:3}}/>
                 <Text style={styles.userEspecial}>Sair</Text>
             </TouchableOpacity>
+            <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
             <View style={styles.userDados}>
-                <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
+                
                 <View style={styles.userList} >
                     <Text style={styles.userName}>{perfilName}</Text>
                     <View style={{flexDirection:'row'}}>

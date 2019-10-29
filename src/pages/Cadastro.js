@@ -3,6 +3,7 @@ import {View, ScrollView, TextInput,Text,ImageBackground,StyleSheet,TouchableOpa
 import ImagePicker from 'react-native-image-picker';
 import {TextInputMask} from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 
 import api from '../services/api';
 
@@ -12,11 +13,14 @@ function Cadastro({navigation}) {
     const [userImagem, setUserImagem] = useState(null);
     const [name, setName] = useState(initialState);
     const [email, setEmail] = useState(initialState);
-    const [senha,setSenha] = useState(initialState);
+    const [senha, setSenha] = useState(initialState);
     const [celular, setCelular] = useState(null);
     const [carregando, setCarregando] = useState(false);
+    const [message, setMessage] = useState('');
+    const [aviso, setAviso] = useState(false);
+    const [sucesso, setSucesso] = useState(false)
+    const [modal,setModal] = useState(false);
 
-    
     selecionarImagem = () => {
         ImagePicker.showImagePicker({
           title:'Selecionar Imagem',  
@@ -50,27 +54,32 @@ function Cadastro({navigation}) {
       }
      async function handleCriarConta(){
         setCarregando(true)
-        const data = new FormData();
-
-        data.append('name',name);
-        data.append('email', email);
-        data.append('celular',celular);
-        data.append('userImagem',userImagem);       
-        data.append('senha',senha);
-
-        const response = await api.post('./user',data);
-        const {message} = response.data;
-
-        if (!message){ // Verifica se existe mensagem de usuário já cadastrado, caso não tenha, cadastra o usuário
-            const {_id} = response.data //Pega o ID do usuário para salvar a seção 
-            await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
-            alert('Conta criada com sucesso, esperamos que aproveite!')
+        if (userImagem === (null) && name === initialState && email === initialState && senha === initialState){
+            setModal(true)
             setCarregando(false)
-            navigation.navigate('Login')
         }else{
-            alert(message);
-            setCarregando(false)
-            
+            const data = new FormData();
+
+            data.append('name',name);
+            data.append('email', email);
+            data.append('celular',celular);
+            data.append('userImagem',userImagem);       
+            data.append('senha',senha);
+
+            const response = await api.post('./user',data);
+            const {message} = response.data;
+
+            if (!message){ // Verifica se existe mensagem de usuário já cadastrado, caso não tenha, cadastra o usuário
+                const {_id} = response.data //Pega o ID do usuário para salvar a seção 
+                await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
+                setSucesso(true);
+                setCarregando(false);
+                navigation.navigate('Login');
+            }else{
+                setMessage(message);
+                setAviso(true);
+                setCarregando(false);
+            }
         }
     }
 
@@ -136,6 +145,30 @@ function Cadastro({navigation}) {
                 </TouchableOpacity>
                 </View>
             </ScrollView>}
+            <SCLAlert 
+                onRequestClose={()=>setAviso(false)}
+                theme='warning'
+                show={aviso}
+                title={'Opa!'}
+                subtitle={message}>
+                <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Entendi!</SCLAlertButton>
+            </SCLAlert>
+            <SCLAlert 
+                onRequestClose={()=>setAviso(false)}
+                theme='success'
+                show={sucesso}
+                title={'Muito bem!'}
+                subtitle={'Conta criada com sucesso, esperamos que aproveite!'}>
+                <SCLAlertButton theme='success' onPress={()=> setSucesso(false)}>Vou começar!</SCLAlertButton>
+            </SCLAlert>
+            <SCLAlert 
+                onRequestClose={()=>setAviso(false)}
+                theme='info'
+                show={modal}
+                title={'Opa!'}
+                subtitle={'Por favor, complete todos os campos!'}>
+                <SCLAlertButton theme='info' onPress={()=> setModal(false)}>Entendi!</SCLAlertButton>
+            </SCLAlert>
         </ImageBackground>
     )
 }

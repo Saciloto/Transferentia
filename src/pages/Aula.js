@@ -131,11 +131,10 @@ const estilo = StyleSheet.create({
         opacity:50,
         borderTopColor:'#000',
         flexDirection:'row',
-        justifyContent:'space-between',
-        paddingRight:25,
-        paddingTop:10,
-        paddingBottom:10,
-        paddingLeft:15
+        justifyContent:'center',
+        alignItems:'center',
+        paddingHorizontal:15,
+        paddingVertical:10
     },
     containerListVert:{
       flex:1,
@@ -178,5 +177,11 @@ const estilo = StyleSheet.create({
         fontSize:17,
         color:'#7d330f',
         fontWeight:'bold'
+    },
+    preco:{
+        color:'#fff',
+        fontSize:16,
+        textAlign:'left',
+        marginHorizontal:15
     }
 })

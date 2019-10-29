@@ -13,8 +13,14 @@ export const styles = StyleSheet.create({
       fontWeight: 'bold',
       textAlign: 'center',
     },
+    subTitle:{
+      color: '#f78232',
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
     sugestao: {
-      color:'#f78232',
+      color:'#7d330f',
       fontSize: 18,
       marginTop: 20,
       textAlign: 'center',
@@ -60,7 +66,8 @@ export const styles = StyleSheet.create({
       marginVertical:5,
       marginHorizontal:10,
       paddingHorizontal:5,
-      backgroundColor:'#fffffa'
+      backgroundColor:'#fffffa',
+      paddingBottom:5
     },
     cardVerti:{
       flex:1,

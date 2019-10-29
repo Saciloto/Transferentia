@@ -12,6 +12,7 @@ import  Icon  from 'react-native-vector-icons/FontAwesome5';
 import EuProfessor from './pages/EuProfessor';
 import EuAluno from './pages/EuAluno';
 import VerAula from './pages/VerAula';
+import VerAlunos from './pages/VerAlunos';
 
 const Routes = createBottomTabNavigator({
     Aprender:{
@@ -25,18 +26,12 @@ const Routes = createBottomTabNavigator({
             Aula:{
                 screen:Aula,
                 navigationOptions:{
-                    title:'Ver aula',
-                    color:'#fff',
+                    title:'Visualizar Instrução',
                     headerStyle:{
                         backgroundColor:'#7d330f',
                         textColor:'#fff'
                     },
                     headerTintColor:'#ffffff',
-                    headerTitleStyle:{
-                        fontWeight:'bold',
-                        textAlign:'center',
-                        flex:1
-                    }
                 }
             }
     }),navigationOptions:{
@@ -79,12 +74,10 @@ const Routes = createBottomTabNavigator({
                 screen:EuAluno,
                 navigationOptions:{
                     title:'Minhas Turmas - Aluno',
-                    color:'#fff',
                     headerStyle:{
                         backgroundColor:'#7d330f',
-                        textColor:'#fff'
                     },
-                    headerTintColor:'#ffffff',
+                    headerTintColor:'#fff',
                     headerTitleStyle:{
                         textAlign:'center',
                     }
@@ -93,13 +86,23 @@ const Routes = createBottomTabNavigator({
            VerAula:{
                screen:VerAula,
                navigationOptions:{
+                   title:'Aula',
+                   headerTintColor:'#fff',
                    headerStyle:{
                        backgroundColor:'#7d330f',
-                       textColor:'#fff'
                    }
                }
+           },
+           VerAlunos:{
+               screen:VerAlunos,
+               navigationOptions:{
+                   title:'Alunos',
+                   headerTintColor:'#fff',
+                    headerStyle:{
+                        backgroundColor:'#7d330f',
+                    }
+               }
            }
-
 
     }),navigationOptions:{
             tabBarLabel:'Perfil',

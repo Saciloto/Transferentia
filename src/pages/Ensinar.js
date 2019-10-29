@@ -229,13 +229,13 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     title: {
-      color: '#7d330f',
+      color: '#f78232',
       fontSize: 22,
       fontWeight: 'bold',
       textAlign: 'center',
     },
     sugestao: {
-      color:'#f78232',
+      color:'#7d330f',
       fontSize: 18,
       marginTop: 10,
       textAlign: 'center',
