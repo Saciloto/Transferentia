@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {View,Text,ImageBackground,Image,StyleSheet,AsyncStorage,TouchableOpacity,ScrollView, BackHandler } from 'react-native';
+import {View,Text,Image,StyleSheet,AsyncStorage,TouchableOpacity,ScrollView, BackHandler } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -10,7 +10,8 @@ export default function Perfil({navigation}){
     const [perfilEmail,setPerfilEmail] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
     const [celular,setCelular] = useState('');
-
+    const [bio,setBio] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+   
     useEffect(() =>{
         async function loadPerfil() {
             const user_id = await AsyncStorage.getItem('user');
@@ -54,10 +55,7 @@ export default function Perfil({navigation}){
                 </View>
             </View>
             <ScrollView style={styles.scrollView}>
-                <Text style={styles.userEspecial}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+                <Text style={styles.userEspecial}>{bio}</Text>
             </ScrollView>
             <Text style={styles.userName}>Minhas turmas como:</Text>
             <View style={styles.containerButtons}>

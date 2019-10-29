@@ -86,9 +86,9 @@ const Routes = createBottomTabNavigator({
            VerAula:{
                screen:VerAula,
                navigationOptions:{
-                   title:'Aula',
-                   headerTintColor:'#fff',
-                   headerStyle:{
+                    title:'Aula',
+                    headerTintColor:'#fff',
+                    headerStyle:{
                        backgroundColor:'#7d330f',
                    }
                }
@@ -96,8 +96,8 @@ const Routes = createBottomTabNavigator({
            VerAlunos:{
                screen:VerAlunos,
                navigationOptions:{
-                   title:'Alunos',
-                   headerTintColor:'#fff',
+                    title:'Alunos',
+                    headerTintColor:'#fff',
                     headerStyle:{
                         backgroundColor:'#7d330f',
                     }
