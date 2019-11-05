@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react';
 import {View,Text,Image,ScrollView, StyleSheet,Button,AsyncStorage} from 'react-native';
-
 import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 
 import api from '../services/api';

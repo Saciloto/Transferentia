@@ -1,23 +1,17 @@
-import React,{useState,useEffect,useCallback,useMemo} from 'react';
-import {Text, View, ImageBackground,StatusBar, ScrollView,FlatList,TouchableOpacity,Image,RefreshControl,Button,AsyncStorage} from 'react-native';
-import StarRating from 'react-native-star-rating'; 
+import React,{useState,useEffect,useCallback} from 'react';
+import {Text, View, ScrollView,FlatList,TouchableOpacity,Image,RefreshControl} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import {styles} from './estilos/styles';
-
-import io from 'socket.io-client';
 import api from '../services/api';
 
+//Tela de aprender onde é listado as aulas disponíveis, tela principal do APP
 export default function Aprender({navigation}){
   const [aulas,setAulas] = useState([])
   const [reload,setReload] = useState(false);
-  const [starCount,setStarCount] = useState(4);
-  //const [logedUser,setLogedUser]
 
   useEffect(()=> {
     async function loadAulas(){
-      // const user_id = await AsyncStorage.getItem('user'); 
-      // setLogedUser(user_id);
       const response = await api.get('./aula')
       setAulas(response.data);
     }
@@ -33,10 +27,6 @@ export default function Aprender({navigation}){
     loadAulas();
     setReload(false)
   }, [reload])
-
-  // useMemo(() => io('http://192.168.0.110:3333/',{ //irá refazer a conexão somente quando a varial loegedUser mudar
-  //   query:{user_id}
-  // }),[logedUser]);
 
 return(
   <ScrollView refreshControl={<RefreshControl refreshing={reload} onRefresh={onReload} style={{backgroundColor:'#fff'}}/>}>
@@ -70,18 +60,17 @@ return(
                                                                       preco:item.preco,
                                                                       professor_id:item.professor                                                                      })}>
             <View style={styles.containerListVert}>
-              <View style={styles.lineTitle}>
-                <Icon name='quote-left' color={'#f78232'} size={22} style={{padding:3}}/>
-                <Text style={styles.tituloVertical}>{item.titulo}</Text>
-              </View>
-              <View style={styles.cardVerti}>
-                  <Image style={styles.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
-                  <View style={styles.listDescricao}>
-                      <Text style={styles.titleDescricao}>Descrição:</Text>
-                      <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
-                      
-                  </View>
-              </View>
+                <View style={styles.lineTitle}>
+                    <Icon name='quote-left' color={'#f78232'} size={22} style={{padding:3}}/>
+                    <Text style={styles.tituloVertical}>{item.titulo}</Text>
+                </View>
+                <View style={styles.cardVerti}>
+                    <Image style={styles.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+item.aulaImagem}}/>
+                    <View style={styles.listDescricao}>
+                        <Text style={styles.titleDescricao}>Descrição:</Text>
+                        <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text> 
+                    </View>
+                </View>
             </View>
           </TouchableOpacity>
         )}

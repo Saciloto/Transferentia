@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import api from '../services/api';
 import {styles} from '../pages/estilos/styles'
+
+//Tela que exibe as aulas em que um usuário se cadastrou 
 export default function EuAluno({navigation}){
 
   const [aulas,setAulas] = useState([]);

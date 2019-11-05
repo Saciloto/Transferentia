@@ -7,7 +7,8 @@ import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 
 import api from '../services/api';
 
-function Cadastro({navigation}) {
+//Tela de cadastro, onde o usuário cria a conta no sistema
+export default function Cadastro({navigation}) {
     const initialState = '';
     const [preview,setPreview] = useState(null);
     const [userImagem, setUserImagem] = useState(null);
@@ -53,6 +54,7 @@ function Cadastro({navigation}) {
             } 
         })
       }
+      
      async function handleCriarConta(){
         setCarregando(true)
         if (userImagem === (null) && name === initialState && email === initialState && senha === initialState){
@@ -196,8 +198,6 @@ function Cadastro({navigation}) {
         </ImageBackground>
     )
 }
-
-export default Cadastro;
 
 const styles = StyleSheet.create({
     container: {

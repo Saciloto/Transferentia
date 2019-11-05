@@ -1,18 +1,16 @@
 import React, { useState,useEffect } from 'react';
-import { Text, View,ImageBackground,StatusBar,StyleSheet,TextInput,DatePickerAndroid,TouchableOpacity,
-        TimePickerAndroid,Image,ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
-import api from '../services/api';
+import { Text, View,StatusBar,StyleSheet,TextInput,DatePickerAndroid,TouchableOpacity,
+        Image,ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
-
 import Icon from 'react-native-vector-icons/FontAwesome5'
+
+import api from '../services/api';
 
 export default function Ensinar({navigation}) {
 
   const [chosenDate, setChosenDate] = useState(new Date());
-  const [chosenAndroidTime, setChosenAndroidTime] = useState('00:00');
   const [androidDate, setAndroidDate] = useState(`${new Date().getUTCDate()}/${new Date().getUTCMonth() + 1}/${new Date().getUTCFullYear()}`);
-  
   const initialState = '';
   const [preview,setPreview] = useState(null);
   const [aulaImagem,setAulaImagem] = useState(null);
@@ -21,7 +19,6 @@ export default function Ensinar({navigation}) {
   const [descricao,setDescricao] = useState(initialState);
   const [materiais,setMateriais] = useState(initialState);
   const [preco, setPreco] = useState(initialState);
-  //const [hora, setHora] = useState(initialState);
   const [carregando, setCarregando] = useState(false);
   const [modal,setModal] = useState(false);
   const [aviso,setAviso] = useState(false);
@@ -87,25 +84,6 @@ export default function Ensinar({navigation}) {
           console.warn('Cannot open date picker', message);
         }
       };
-      
-    setTimeAndroid = async () => {
-      try {
-        const { action, hour, minute } = await TimePickerAndroid.open({
-          hour: 14,
-          minute: 0,
-          is24Hour: true, // Will display '2 PM'
-        });
-        if (action !== TimePickerAndroid.dismissedAction) {
-          // Selected hour (0-23), minute (0-59)
-          const m = (minute < 10) ? `0${minute}` : minute;
-          const h = (hour < 10) ? `0${hour}` : hour;
-          console.log(`time: ${hour}:${minute}`);
-          setChosenAndroidTime(`${h}:${m}`);
-        }
-      } catch ({ code, message }) {
-        console.warn('Cannot open time picker', message);
-      }
-    };
 
     async function handleCriarAula(){
       parseInt(preco);

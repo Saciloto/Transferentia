@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import api from '../services/api';
 
 export default function Perfil({navigation}){
+    
     const [perfilName,setPerfilName] = useState('');
     const [perfilEmail,setPerfilEmail] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
@@ -41,10 +42,8 @@ export default function Perfil({navigation}){
                 <Text style={styles.userEspecial}>Sair</Text>
             </TouchableOpacity>
             <Image style={styles.profileImage} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
-            <View style={styles.userDados}>
-                
-                <View style={styles.userList} >
-                    <Text style={styles.userName}>{perfilName}</Text>
+            <Text style={styles.userName}>{perfilName}</Text>
+                <View style={styles.userList}>
                     <View style={{flexDirection:'row'}}>
                         <Icon name='at' color={'#f78232'} size={22} style={{padding:3, paddingLeft:3}}/>
                         <Text style={styles.userEspecial}>{perfilEmail}</Text>
@@ -54,7 +53,6 @@ export default function Perfil({navigation}){
                         <Text style={styles.userEspecial}>{celular}</Text>
                     </View>
                 </View>
-            </View>
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.userEspecial}>{bio}</Text>
             </ScrollView>

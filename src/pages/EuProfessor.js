@@ -2,9 +2,10 @@ import React,{useState,useEffect} from 'react';
 import {Text, View, ScrollView,FlatList,Image,AsyncStorage,Button} from 'react-native';
 import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import {styles} from '../pages/estilos/styles'
 
+import {styles} from '../pages/estilos/styles'
 import api from '../services/api';
+
 // Tela responsável por exibir as aulas em que o usuário é o instrutor
 export default function EuProfessor({navigation}){
 

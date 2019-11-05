@@ -4,16 +4,15 @@ import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 
 import api from '../services/api';
 
-
+// Tela inicial da aplicação onde é realizado o login no sistema
 export default function Login({navigation}){
+  
   const initialState = '';
   const [campo, setCampo] = useState(false)
   const [email, setEmail] = useState(initialState);
   const [senha, setSenha] = useState(initialState);
   const [message,setMessage] = useState('');
   const [aviso,setAviso] = useState(false);
-
-
 
   useEffect(() => { // veririca se o usuário já esta logado, caso esteja, já entra na aplicação
         AsyncStorage.getItem('user').then(user =>{
@@ -22,7 +21,6 @@ export default function Login({navigation}){
             }
         })
     }, []);
-
 
   async function handleAcessarButton(){
     const response =  await api.post('/login',{email,senha})
@@ -82,9 +80,9 @@ export default function Login({navigation}){
                       value={senha}
                       onChangeText={setSenha}
                       />
-            {/* <TouchableOpacity onPress={()=> alert('Lamentamos, funcionalidade ainda em desenvolvimento.')}>
+            <TouchableOpacity onPress={()=> {setMessage('Desculpe ainda estamos desenvolvendo esse módulo!') ,setAviso(true)}}>
               <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity style={styles.acessarButton} onPress={handleAcessarButton}>
               <Text style={styles.welcome}>Acessar</Text>
             </TouchableOpacity>

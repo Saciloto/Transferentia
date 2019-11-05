@@ -1,12 +1,13 @@
 import React,{useState,useEffect} from 'react';
-import {View,Text,Image,ScrollView, StyleSheet,Button,AsyncStorage} from 'react-native';
+import {View,Text,Image,ScrollView, StyleSheet} from 'react-native';
 
 import api from '../services/api';
 
+//Responsável por exibir as informações de uma aula que se cadastrou
 function VerAula({navigation}){
+
     const [perfilName,setPerfilName] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
-
 
     useEffect(()=> {
         async function loadAula(){
@@ -19,7 +20,6 @@ function VerAula({navigation}){
             console.log(response.data.user[0])
             if(!message){
                 const {name,userImagem} = response.data.user[0]
-                //setProfessor(user);
                 setPerfilName(name);
                 setPerfilImage(userImagem);
             }else{
