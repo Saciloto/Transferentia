@@ -13,6 +13,7 @@ function Cadastro({navigation}) {
     const [userImagem, setUserImagem] = useState(null);
     const [name, setName] = useState(initialState);
     const [email, setEmail] = useState(initialState);
+    const [bio,setBio] = useState(initialState);
     const [senha, setSenha] = useState(initialState);
     const [celular, setCelular] = useState(null);
     const [carregando, setCarregando] = useState(false);
@@ -107,37 +108,60 @@ function Cadastro({navigation}) {
                     <TouchableOpacity style={styles.imageButton}onPress={selecionarImagem}>
                         <Icon name='image' color={'#fff'} size={22}/>
                         <Text style={styles.txtButton}>Selecionar Imagem</Text>
-                    </TouchableOpacity> }                  
-                    <TextInput placeholder='Nome Completo'
+                    </TouchableOpacity> }
+                    <View style={styles.icon}>
+                        <Icon name='quote-left' color={'#fff'} size={22}/>
+                        <TextInput placeholder='Faça uma breve descrição sobre você, quais suas especialidades, ficaremos felizes em saber ;)'
                         placeholderTextColor='#fff' 
-                        style={styles.inputs}
-                        value={name}
-                        onChangeText={setName}
-                        autoCapitalize='words'
-                        />
-                    <TextInput placeholder='E-mail'
-                        placeholderTextColor='#fff'
-                        keyboardType='email-address'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        style={styles.inputs}
-                        value={email}
-                        onChangeText={setEmail}
-                        />
-                    <TextInputMask placeholder={'Celular'}
-                        style={styles.inputs} 
-                        type={'cel-phone'}
-                        value={celular}
-                        onChangeText={setCelular}
-                        placeholderTextColor={'#fff'}
-                        />
-                    <TextInput placeholder='Senha'
-                        secureTextEntry={true}
-                        placeholderTextColor='#fff' 
-                        style={styles.inputs}
-                        value={senha}
-                        onChangeText={setSenha}
-                        />
+                        multiline={true}
+                        numberOfLines={5}
+                        style={[styles.inputs,styles.descricao]}
+                        value={bio}
+                        onChangeText={setBio}
+                            />
+                    </View>
+                    <View style={styles.icon}>    
+                        <Icon name='user' color={'#fff'} size={22}/>
+                        <TextInput placeholder='Nome Completo'
+                            placeholderTextColor='#fff' 
+                            style={styles.inputs}
+                            value={name}
+                            onChangeText={setName}
+                            autoCapitalize='words'
+                            />
+                    </View>
+                    <View style={styles.icon}>
+                        <Icon name='at' color={'#fff'} size={22}/>
+                        <TextInput placeholder='Seu melhor E-mail'
+                            placeholderTextColor='#fff'
+                            keyboardType='email-address'
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                            style={styles.inputs}
+                            value={email}
+                            onChangeText={setEmail}
+                            />
+                    </View>
+                    <View style={styles.icon}>
+                        <Icon name='mobile-alt' color={'#fff'} size={22}/>
+                        <TextInputMask placeholder={'(55)99999-9999'}
+                            style={styles.inputs} 
+                            type={'cel-phone'}
+                            value={celular}
+                            onChangeText={setCelular}
+                            placeholderTextColor={'#fff'}
+                            />
+                    </View>
+                    <View style={styles.icon}>
+                        <Icon name='key' color={'#fff'} size={22}/>
+                        <TextInput placeholder='Sua melhor senha, não esqueça!'
+                            secureTextEntry={true}
+                            placeholderTextColor='#fff' 
+                            style={styles.inputs}
+                            value={senha}
+                            onChangeText={setSenha}
+                            />
+                    </View>
                 </View>
                 <View style={styles.containerInputs}>
                 <TouchableOpacity style={styles.button} onPress={handleCriarConta}>
@@ -192,41 +216,38 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center'
     },
-    selectImagem:{
-        backgroundColor:'#f78232',
-        justifyContent:'center',
-        alignItems:'center',
-        borderWidth:1,
-        borderRadius:40,
-        padding:10,
-        marginBottom:10,
-        marginTop:10
+    icon:{
+        flexDirection:'row',
+        alignItems:'stretch'
     },
     imageButton:{
         borderWidth:0.5,
         borderColor:'#fff',
         alignItems:'center',
         justifyContent:'center',
-        width:180,
-        height:180,
-        borderRadius:90,
-        marginTop:10
+        width:140,
+        height:140,
+        borderRadius:70,
+        marginVertical:10
     },
     imagem:{
-        width:180,
-        height:180,
-        borderRadius:90,
-        marginTop:10
+        width:140,
+        height:140,
+        borderRadius:70,
+        marginVertical:10
     },
     linha:{
         flexDirection:'row'
     },
     inputs:{
+        height:40,
+        borderColor:'#ccc',
+        borderWidth:0.5,
+        marginBottom:10,
+        borderRadius:10,
         color:'#fff',
-        borderBottomWidth:2,
-        borderBottomColor:'#ccc',
-        width:250,
-        padding:20
+        width:'65%',
+        marginHorizontal:10
     },
     button:{
         flexDirection:'row',
@@ -258,6 +279,10 @@ const styles = StyleSheet.create({
         width:'100%',
         height:'100%',
         backgroundColor:'transparent',
-        
-    }
+    },
+    descricao:{
+        width:'85%',
+        maxHeight:100,
+        height:80
+    },
 })

@@ -21,7 +21,6 @@ export default function Ensinar({navigation}) {
   const [descricao,setDescricao] = useState(initialState);
   const [materiais,setMateriais] = useState(initialState);
   const [preco, setPreco] = useState(initialState);
-  const [data, setData] = useState(initialState);
   //const [hora, setHora] = useState(initialState);
   const [carregando, setCarregando] = useState(false);
   const [modal,setModal] = useState(false);
@@ -130,7 +129,8 @@ export default function Ensinar({navigation}) {
       setCarregando(false)
       setTitulo(initialState)
       setDescricao(initialState)
-      setPreco(initialState)}
+      setPreco(initialState)
+      setMateriais(initialState)}
     };
 
         return (

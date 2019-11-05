@@ -10,7 +10,7 @@ export default function Perfil({navigation}){
     const [perfilEmail,setPerfilEmail] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
     const [celular,setCelular] = useState('');
-    const [bio,setBio] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+    const [bio,setBio] = useState('Sua descrição');
    
     useEffect(() =>{
         async function loadPerfil() {
@@ -19,11 +19,12 @@ export default function Perfil({navigation}){
                 headers:{user_id}
             });
             console.log(response.data);
-            const {name,email,userImagem,celular} = response.data.user[0] 
+            const {name,email,userImagem,celular,bio} = response.data.user[0] 
             setPerfilName(name);
             setPerfilEmail(email);
             setPerfilImage(userImagem);
             setCelular(celular)
+            setBio(bio)
         }   
         loadPerfil()
     },[]);

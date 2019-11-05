@@ -82,9 +82,9 @@ export default function Login({navigation}){
                       value={senha}
                       onChangeText={setSenha}
                       />
-            <TouchableOpacity onPress={()=> alert('Lamentamos, funcionalidade ainda em desenvolvimento.')}>
+            {/* <TouchableOpacity onPress={()=> alert('Lamentamos, funcionalidade ainda em desenvolvimento.')}>
               <Text style={styles.esqueceuSenha}>Esqueceu a senha?</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.acessarButton} onPress={handleAcessarButton}>
               <Text style={styles.welcome}>Acessar</Text>
             </TouchableOpacity>

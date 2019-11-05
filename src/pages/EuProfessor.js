@@ -10,6 +10,9 @@ export default function EuProfessor({navigation}){
 
   const [aulas,setAulas] = useState([]);
   const [aviso,setAviso] = useState(false);
+  const [mensagem,setMensagem] = useState('');
+  const [question,setQuestion] = useState(false);
+  const [selectAula,setSelectAula] = useState(null);
 
   useEffect(()=> {
     async function loadAulas(){
@@ -24,11 +27,19 @@ export default function EuProfessor({navigation}){
             const {aula} = response.data;
             setAulas(aula);
         }else{
+            setMensagem('Você não compartilhou nenhuma instrução, comece agora mesmo!!')
             setAviso(true)
         }
     }
     loadAulas();
   }, []);
+
+    async function excluirAula(id_aula){
+        setQuestion(false)
+        setMensagem('Aula excluída com sucesso!')
+        await api.delete('/aula/'+id_aula)
+        setAviso(true)
+    }
 
     return(
         <ScrollView>
@@ -47,18 +58,31 @@ export default function EuProfessor({navigation}){
                         <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
                     </View>
                 </View>
-                <Button color={'#f78232'} title={'Visualizar alunos'} onPress={() => navigation.navigate('VerAlunos',{aula_id:item._id,aula_titulo:item.titulo})}/> 
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                    <Button color={'#f78232'} title={'Visualizar alunos'} onPress={() => navigation.navigate('VerAlunos',{aula_id:item._id,aula_titulo:item.titulo})}/> 
+                    <Button color={'#7165c1'} title={'Excluir aula'} onPress={() => {setSelectAula(item._id),
+                        setMensagem('Deseja excluir essa aula?'), setQuestion(true)}} />
+                </View>
                 </View>
             )}
             />
             <SCLAlert 
                 onRequestClose={()=>setAviso(false)}
-                theme='warning'
+                theme='info'
                 show={aviso}
                 title={'Opa!'}
-                subtitle={'Você não compartilhou nenhuma instrução, comece agora mesmo!!'}>
-                <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Vou começar!</SCLAlertButton>
-              </SCLAlert>
+                subtitle={mensagem}>
+                <SCLAlertButton theme='info' onPress={()=> setAviso(false)}>OK!</SCLAlertButton>
+            </SCLAlert>
+            <SCLAlert 
+                onRequestClose={()=>setAviso(false)}
+                theme='warning'
+                show={question}
+                title={'Opa!'}
+                subtitle={mensagem}>
+                <SCLAlertButton theme='info' onPress={()=> setQuestion(false)}>Me enganei</SCLAlertButton>
+                <SCLAlertButton theme='danger' onPress={()=> excluirAula(selectAula)}>Excluir</SCLAlertButton>
+            </SCLAlert>
         </ScrollView>
     )
 }
