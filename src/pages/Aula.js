@@ -5,13 +5,15 @@ import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 import api from '../services/api';
 
 function Aula({navigation}){
+
+    const initialState = '';
     const [disable,setDisable] = useState(false);
-    const [perfilName,setPerfilName] = useState('');
-    const [perfilImage,setPerfilImage] = useState('');
+    const [perfilName,setPerfilName] = useState(initialState);
+    const [perfilImage,setPerfilImage] = useState(initialState);
     const [modal,setModal] = useState(false);
     const [badmodal,setBadModal] = useState(false);
-    const [message,setMessage] = useState('');
-
+    const [message,setMessage] = useState(initialState);
+    const [bio,setBio] = useState(initialState);
 
     useEffect(()=> {
         async function loadAula(){
@@ -23,8 +25,8 @@ function Aula({navigation}){
             const {message} = response.data.user[0]
             console.log(response.data.user[0])
             if(!message){
-                const {name,userImagem} = response.data.user[0]
-                //setProfessor(user);
+                const {name,userImagem,bio} = response.data.user[0]
+                setBio(bio);
                 setPerfilName(name);
                 setPerfilImage(userImagem);
             }else{
@@ -69,8 +71,7 @@ function Aula({navigation}){
                     <Image style={estilo.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
                         <View style={estilo.listDescricao}>
                     <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Nome:</Text> {perfilName}</Text>
-                    <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Descrição:</Text> Conhecimento em informática, anos de experiencias, etc, loren ipsun Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam.</Text>
+                    <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Descrição:</Text> {bio} </Text>
                         </View>
                 </View>
             </View>

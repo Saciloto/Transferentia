@@ -57,7 +57,7 @@ export default function Cadastro({navigation}) {
       
      async function handleCriarConta(){
         setCarregando(true)
-        if (userImagem === (null) && name === initialState && email === initialState && senha === initialState){
+        if (userImagem === (null) && name === initialState && email === initialState && senha === initialState && celular === (null)){
             setModal(true)
             setCarregando(false)
         }else{
@@ -68,6 +68,7 @@ export default function Cadastro({navigation}) {
             data.append('celular',celular);
             data.append('userImagem',userImagem);       
             data.append('senha',senha);
+            data.append('bio',bio);
 
             const response = await api.post('./user',data);
             const {message} = response.data;
@@ -164,6 +165,7 @@ export default function Cadastro({navigation}) {
                             onChangeText={setSenha}
                             />
                     </View>
+                    <Text style={{color:'#fff'}}> Obs: Todos os campos são obrigatórios ;)</Text>
                 </View>
                 <View style={styles.containerInputs}>
                 <TouchableOpacity style={styles.button} onPress={handleCriarConta}>

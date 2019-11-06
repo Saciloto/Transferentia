@@ -8,6 +8,7 @@ function VerAula({navigation}){
 
     const [perfilName,setPerfilName] = useState('');
     const [perfilImage,setPerfilImage] = useState('');
+    const [bio,setBio] = useState('');
 
     useEffect(()=> {
         async function loadAula(){
@@ -19,7 +20,8 @@ function VerAula({navigation}){
             const {message} = response.data.user[0]
             console.log(response.data.user[0])
             if(!message){
-                const {name,userImagem} = response.data.user[0]
+                const {name,userImagem,bio} = response.data.user[0]
+                setBio(bio);
                 setPerfilName(name);
                 setPerfilImage(userImagem);
             }else{
@@ -43,8 +45,7 @@ function VerAula({navigation}){
                     <Image style={estilo.imageVertical} source={{uri:'https://transferentia-backend.herokuapp.com/files/'+perfilImage}}/>
                         <View style={estilo.listDescricao}>
                     <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Nome:</Text> {perfilName}</Text>
-                    <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Descrição:</Text>Loren ipsun Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam.</Text>
+                    <Text style={estilo.txtProfessor}><Text style={estilo.tituloProfessor}>Descrição:</Text> {bio} </Text>
                         </View>
                 </View>
             </View>

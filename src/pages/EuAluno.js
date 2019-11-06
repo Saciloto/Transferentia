@@ -63,7 +63,7 @@ export default function EuAluno({navigation}){
         theme='warning'
         show={aviso}
         title={'Opa!'}
-        subtitle={'Você não está inscrito em nenhuma instrução, comece agora mesmo!!'}>
+        subtitle={'Você não está inscrito em nenhuma instrução :('}>
         <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Vou começar!</SCLAlertButton>
       </SCLAlert>
   </ScrollView>
