@@ -47,7 +47,7 @@ export default function EuAluno({navigation}){
                         <Text numberOfLines={6} style={styles.txtDescricao}>- {item.descricao}</Text>
                     </View>
                 </View>
-                <Button color={'#f78232'}  title={'Visualizar alunos'} onPress={() => navigation.navigate('VerAula',{aula_id:item._id,
+                <Button color={'#f78232'}  title={'Visualizar aula'} onPress={() => navigation.navigate('VerAula',{aula_id:item._id,
                                                                   aulaImagem:item.aulaImagem,
                                                                   titulo:item.titulo,
                                                                   data:item.data,

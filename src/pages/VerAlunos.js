@@ -39,7 +39,7 @@ export default function EuProfessor({navigation}){
                         </View>
                         <View style={styles.listaCard}>
                             <Icon name='envelope' color={'#f78232'} size={22}/>
-                            <Text> - email@email.com </Text>
+                            <Text> - {item.email} </Text>
                         </View>
                         <View style={styles.listaCard}>
                             <Icon name='whatsapp' color={'#f78232'} size={22}/>

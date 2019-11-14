@@ -56,7 +56,8 @@ export default function Cadastro({navigation}) {
       }
       
      async function handleCriarConta(){
-        setCarregando(true)
+        try{
+            setCarregando(true)
         if (userImagem === (null) && name === initialState && email === initialState && senha === initialState && celular === (null)){
             setModal(true)
             setCarregando(false)
@@ -85,6 +86,11 @@ export default function Cadastro({navigation}) {
                 setCarregando(false);
             }
         }
+    }catch(err){
+        setMessage('Estamos enfrando alguns problemas, tente novamente mais tarde!');
+        setCarregando(false);
+        setAviso(true);
+    }
     }
 
     return( 

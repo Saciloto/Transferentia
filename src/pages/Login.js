@@ -23,7 +23,7 @@ export default function Login({navigation}){
     }, []);
 
   async function handleAcessarButton(){
-    const response =  await api.post('/login',{email,senha})
+    try{ const response =  await api.post('/login',{email,senha})
     const {message} = response.data;
         
         if (message){
@@ -34,6 +34,9 @@ export default function Login({navigation}){
           await AsyncStorage.setItem('user',_id);
           navigation.navigate('Aprender')
         }
+    } catch(err){
+      alert('Estamos enfrando alguns problemas, tente novamente mais tarde!')
+    }
   }
 
   return(
@@ -98,7 +101,7 @@ export default function Login({navigation}){
             show={aviso}
             title={'Opa!'}
             subtitle={message}>
-            <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Vou começar!</SCLAlertButton>
+            <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Me enganei!</SCLAlertButton>
       </SCLAlert>
     </View>
   );

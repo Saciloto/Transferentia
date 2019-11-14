@@ -40,6 +40,7 @@ export default function EuProfessor({navigation}){
         setMensagem('Aula excluída com sucesso!')
         await api.delete('/aula/'+id_aula)
         setAviso(true)
+        navigation.navigate('Perfil');
     }
 
     return(

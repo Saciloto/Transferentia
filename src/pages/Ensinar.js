@@ -22,6 +22,7 @@ export default function Ensinar({navigation}) {
   const [carregando, setCarregando] = useState(false);
   const [modal,setModal] = useState(false);
   const [aviso,setAviso] = useState(false);
+  const [message,setMessage] = useState(initialState);
 
   useEffect(() =>{
     async function loadPerfil() {
@@ -86,29 +87,37 @@ export default function Ensinar({navigation}) {
       };
 
     async function handleCriarAula(){
-      parseInt(preco);
-      setCarregando(true)
-      if (aulaImagem === (null) && titulo === initialState && descricao === initialState && preco === initialState){
-        setAviso(true)
-        setCarregando(false)
-      }else{
-      const data = new FormData();
-      
-      data.append('aulaImagem',aulaImagem);   
-      data.append('titulo',titulo);      
-      data.append('descricao', descricao);
-      data.append('materiais',materiais);
-      data.append('data',androidDate);
-      data.append('preco',preco);
-      data.append('professor',professor);
+      try{
+        parseInt(preco);
+        setCarregando(true)
+        if (aulaImagem === (null) && titulo === initialState && descricao === initialState && preco === initialState){
+          setMessage('Complete todos os campos antes de continuar!');
+          setAviso(true);
+          setCarregando(false);
+        }else{
+        const data = new FormData();
+        
+        data.append('aulaImagem',aulaImagem);   
+        data.append('titulo',titulo);      
+        data.append('descricao', descricao);
+        data.append('materiais',materiais);
+        data.append('data',androidDate);
+        data.append('preco',preco);
+        data.append('professor',professor);
 
-      await api.post('/aula',data);
-      setModal(true)
-      setCarregando(false)
-      setTitulo(initialState)
-      setDescricao(initialState)
-      setPreco(initialState)
-      setMateriais(initialState)}
+        await api.post('/aula',data);
+        setModal(true)
+        setCarregando(false)
+        setTitulo(initialState)
+        setDescricao(initialState)
+        setPreco(initialState)
+        setMateriais(initialState)
+        setPreview(null)}
+      }catch{
+        setCarregando(false);
+        setMessage('Estamos enfrando alguns problemas, tente novamente mais tarde!')
+        setAviso(true);
+      }
     };
 
         return (
@@ -118,7 +127,7 @@ export default function Ensinar({navigation}) {
               <ActivityIndicator size='large' color={'#7d330f'}/>
             </View> || <ScrollView>
                 <Text style={styles.title}>Hora de ensinar o que você sabe!</Text>
-                <Text style={styles.sugestao}>Esperamos que tenha um ótima experiência ao passar seu conhecimento para a alguém! ;)</Text>
+                <Text style={styles.sugestao}>Esperamos que tenha uma ótima experiência ao passar seu conhecimento para a alguém! ;)</Text>
                 
                 <View style={styles.containerButtons}>   
                     <View style={styles.inputsLine}>
@@ -175,7 +184,7 @@ export default function Ensinar({navigation}) {
                       </TouchableOpacity>
                       {preview && <Image style={styles.preview} source={preview}/>}
                     </View> 
-                    <Text> OBS¹: O Endereço deverá ser combinado juntamento com seu aluno!</Text>
+                    <Text> OBS¹: O Endereço deverá ser combinado com seu aluno!</Text>
                 </View> 
                 <TouchableOpacity style={styles.button} onPress={handleCriarAula}>
                     <Text style={styles.eninarBt}>Ensinar</Text>
@@ -195,7 +204,7 @@ export default function Ensinar({navigation}) {
                 theme='warning'
                 show={aviso}
                 title={'Opa!'}
-                subtitle={'Complete todos os campos antes de continuar!'}>
+                subtitle={message}>
                 <SCLAlertButton theme='warning' onPress={()=> setAviso(false)}>Entendi</SCLAlertButton>
               </SCLAlert>
             </View>
