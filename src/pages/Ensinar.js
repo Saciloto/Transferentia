@@ -91,9 +91,9 @@ export default function Ensinar({navigation}) {
         parseInt(preco);
         setCarregando(true)
         if (aulaImagem === (null) && titulo === initialState && descricao === initialState && preco === initialState){
+          setCarregando(false);
           setMessage('Complete todos os campos antes de continuar!');
           setAviso(true);
-          setCarregando(false);
         }else{
         const data = new FormData();
         

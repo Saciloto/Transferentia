@@ -58,9 +58,9 @@ export default function Cadastro({navigation}) {
      async function handleCriarConta(){
         try{
             setCarregando(true)
-        if (userImagem === (null) && name === initialState && email === initialState && senha === initialState && celular === (null)){
-            setModal(true)
+        if (userImagem === (null)){
             setCarregando(false)
+            setModal(true)
         }else{
             const data = new FormData();
 
@@ -77,9 +77,8 @@ export default function Cadastro({navigation}) {
             if (!message){ // Verifica se existe mensagem de usuário já cadastrado, caso não tenha, cadastra o usuário
                 const {_id} = response.data //Pega o ID do usuário para salvar a seção 
                 await AsyncStorage.setItem('user',_id); // salva a informação do usuário que está logado
-                setSucesso(true);
                 setCarregando(false);
-                navigation.navigate('Login');
+                setSucesso(true);
             }else{
                 setMessage(message);
                 setAviso(true);
@@ -87,10 +86,15 @@ export default function Cadastro({navigation}) {
             }
         }
     }catch(err){
-        setMessage('Estamos enfrando alguns problemas, tente novamente mais tarde!');
+        setMessage('Estamos enfrentando alguns problemas, tente mais tarde!');
         setCarregando(false);
         setAviso(true);
     }
+    }
+
+    async function loginSucess(){
+        await setSucesso(false);
+        navigation.navigate('Login')
     }
 
     return( 
@@ -193,7 +197,7 @@ export default function Cadastro({navigation}) {
                 show={sucesso}
                 title={'Muito bem!'}
                 subtitle={'Conta criada com sucesso, esperamos que aproveite!'}>
-                <SCLAlertButton theme='success' onPress={()=> setSucesso(false)}>Vou começar!</SCLAlertButton>
+                <SCLAlertButton theme='success' onPress={()=> loginSucess()}>Vou começar!</SCLAlertButton>
             </SCLAlert>
             <SCLAlert 
                 onRequestClose={()=>setAviso(false)}
