@@ -93,7 +93,7 @@ function Aula({navigation}){
             </SCLAlert>
         </ScrollView>
         <View style={estilo.footer}>
-            <Text style={estilo.preco}> Valor: {navigation.getParam('preco')}R$</Text>
+            <Text style={estilo.preco}> Valor: R$ {navigation.getParam('preco')},00</Text>
             <Button color={'#f78232'} title={'Gostaria de aprender'} onPress={handleInscricao} disabled={disable}></Button>  
         </View>
         </>
