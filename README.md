@@ -8,7 +8,6 @@ do Instituto Federal Farroupilha, Campus São Borja- RS. Obtendo nota 10 na sua 
 
 Foi desenvolvido utilizando o React Native, além de uma API em NodeJS, e persistindo seus dados no MongoDB.
 
+## Screenshots e SiteMap
 
-### Screenshots
-
-https://drive.google.com/file/d/1ZrgDMGVclvMLUo264nrIvTPmZOMdueez/view?usp=sharing
+https://drive.google.com/open?id=1p2wtHjN3zFAwmk87fClCY_BhbA-DB76o
